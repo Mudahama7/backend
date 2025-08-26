@@ -4,6 +4,7 @@ import backend.model.auth.ConnectedUser;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.spec.SecretKeySpec;
@@ -47,8 +48,12 @@ public class JwtUtil {
 
     public String generateToken(ConnectedUser user) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put("authorities", user.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .toList());
         return createToken(claims, user);
     }
+
 
     @SuppressWarnings("deprecation")
     private String createToken(Map<String, Object> claims, ConnectedUser userDetails) {

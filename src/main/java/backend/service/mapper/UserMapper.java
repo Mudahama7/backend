@@ -1,11 +1,13 @@
 package backend.service.mapper;
 
-import backend.dto.NewUserRequest;
+import backend.dto.newEntityRequest.NewUser;
 import backend.model.Utilisateur;
 import backend.model.enums.Role;
 import backend.service.contract.BureauService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
 
 @AllArgsConstructor
 @Service
@@ -13,23 +15,23 @@ public class UserMapper {
 
     private BureauService bureauService;
 
-
-    public Utilisateur fromNewUserRequestToUser(NewUserRequest newUserRequest) {
+    public Utilisateur fromNewUserRequestToUser(NewUser newUser) {
         Utilisateur utilisateur = new Utilisateur();
 
-        utilisateur.setEmail(newUserRequest.getEmail());
-        utilisateur.setNom(newUserRequest.getNom());
-        utilisateur.setBureau(bureauService.findByLibelleBureau(newUserRequest.getBureau()));
-        utilisateur.setDate_naissance(newUserRequest.getDate_naissance());
-        utilisateur.setPhone(newUserRequest.getPhone());
-        utilisateur.setPrenom(newUserRequest.getPrenom());
-        utilisateur.setFunction(newUserRequest.getFunction());
-        utilisateur.setProfession(newUserRequest.getProfession());
-        utilisateur.setProfile(newUserRequest.getProfile());
-        utilisateur.setSex(newUserRequest.getSex());
-        utilisateur.setRole(Role.valueOf(newUserRequest.getRole().toUpperCase()));
+        utilisateur.setEmail(newUser.getEmail());
+        utilisateur.setNom(newUser.getNom());
+        utilisateur.setBureau(bureauService.findByLibelleBureau(newUser.getBureau()));
+        utilisateur.setDateNaissance(LocalDate.parse(newUser.getDate_naissance()));
+        utilisateur.setPhone(newUser.getPhone());
+        utilisateur.setPrenom(newUser.getPrenom());
+        utilisateur.setFunction(newUser.getFunction());
+        utilisateur.setProfession(newUser.getProfession());
+        utilisateur.setProfile(newUser.getProfile());
+        utilisateur.setSex(newUser.getSex());
+        utilisateur.setRole(Role.valueOf(newUser.getRole().toUpperCase()));
 
         return utilisateur;
+
     }
 
 }

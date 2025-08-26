@@ -1,14 +1,14 @@
 package backend.service.contract;
 
-import backend.dto.NewBureauRequest;
-import backend.dto.UpdateBureauRequest;
+import backend.dto.newEntityRequest.NewBureau;
+import backend.dto.updateEntityRequest.UpdateBureau;
 import backend.model.Bureau;
 
 public interface BureauService {
 
-    boolean createBureau(NewBureauRequest newBureauRequest);
+    boolean createBureau(NewBureau newBureau);
 
-    boolean updateBureau(UpdateBureauRequest updateBureauRequest);
+    boolean updateBureau(UpdateBureau updateBureau);
 
     Bureau findByLibelleBureau(String libelle_bureau);
 

@@ -22,7 +22,7 @@ public class Utilisateur {
     private String nom;
     private String prenom;
     private String profession;
-    private LocalDate date_naissance;
+    private LocalDate dateNaissance;
     private String profile;
     private String function;
     private String phone;
@@ -32,7 +32,7 @@ public class Utilisateur {
     private Role role;
 
     @ManyToOne
-    private Bureau bureau;
+    private Bureau bureau = null;
 
     @OneToMany(mappedBy = "utilisateur",  cascade = CascadeType.ALL)
     private List<Document> documents;

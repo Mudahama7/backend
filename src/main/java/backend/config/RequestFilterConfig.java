@@ -2,6 +2,7 @@ package backend.config;
 
 import backend.model.auth.ConnectedUser;
 import backend.service.mapper.ConnectedUserMapper;
+import backend.service.utils.CustomUserDetails;
 import backend.service.utils.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -23,7 +24,7 @@ import java.io.IOException;
 public class RequestFilterConfig extends OncePerRequestFilter {
 
     private JwtUtil jwtUtil;
-    private ConnectedUserMapper connectedUserMapper;
+    private CustomUserDetails customUserDetails;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
@@ -46,7 +47,9 @@ public class RequestFilterConfig extends OncePerRequestFilter {
         }
 
         if (StringUtils.hasLength(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-            ConnectedUser userDetails = connectedUserMapper.fromEmailToConnectedUserObjet(username);
+
+            ConnectedUser userDetails = (ConnectedUser) customUserDetails.loadUserByUsername(username);
+
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
                         userDetails, null, userDetails.getAuthorities());
@@ -54,6 +57,7 @@ public class RequestFilterConfig extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
+
         }
         filterChain.doFilter(request, response);
 

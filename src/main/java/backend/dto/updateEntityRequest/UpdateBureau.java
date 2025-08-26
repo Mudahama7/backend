@@ -1,12 +1,13 @@
-package backend.dto;
+package backend.dto.updateEntityRequest;
 
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class UpdateBureauRequest {
+public class UpdateBureau {
 
     private Long  id;
     private String new_libelle_bureau;
+
 }

@@ -1,7 +1,7 @@
 package backend.service.implentation;
 
-import backend.dto.NewBureauRequest;
-import backend.dto.UpdateBureauRequest;
+import backend.dto.newEntityRequest.NewBureau;
+import backend.dto.updateEntityRequest.UpdateBureau;
 import backend.model.Bureau;
 import backend.repository.BureauRepository;
 import backend.service.contract.BureauService;
@@ -15,12 +15,12 @@ public class BureauServiceImpl implements BureauService {
     private final BureauRepository bureauRepository;
 
     @Override
-    public boolean createBureau(NewBureauRequest newBureauRequest) {
+    public boolean createBureau(NewBureau newBureau) {
         return false;
     }
 
     @Override
-    public boolean updateBureau(UpdateBureauRequest updateBureauRequest) {
+    public boolean updateBureau(UpdateBureau updateBureau) {
         return false;
     }
 

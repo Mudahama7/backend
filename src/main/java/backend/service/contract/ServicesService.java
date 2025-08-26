@@ -1,12 +1,12 @@
 package backend.service.contract;
 
-import backend.dto.NewServiceRequest;
-import backend.dto.UpdateDepartementRequest;
+import backend.dto.newEntityRequest.NewService;
+import backend.dto.updateEntityRequest.UpdateDepartement;
 
 public interface ServicesService {
 
-    boolean createServices(NewServiceRequest newServiceRequest);
+    boolean createServices(NewService newService);
 
-    boolean updateServices(UpdateDepartementRequest updateDepartementRequest);
+    boolean updateServices(UpdateDepartement updateDepartement);
 
 }

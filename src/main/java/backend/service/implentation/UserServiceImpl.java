@@ -1,6 +1,6 @@
 package backend.service.implentation;
 
-import backend.dto.NewUserRequest;
+import backend.dto.newEntityRequest.NewUser;
 import backend.model.Utilisateur;
 import backend.repository.UserRepository;
 import backend.service.contract.UserService;
@@ -26,7 +26,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean ajouter_user(NewUserRequest user) throws MessagingException {
+    public boolean ajouter_user(NewUser user) throws MessagingException {
 
         Utilisateur new_utilisateur = userMapper.fromNewUserRequestToUser(user);
 
@@ -38,6 +38,7 @@ public class UserServiceImpl implements UserService {
                 mailText,
                 "Confirmation de création de compte"
         );
+
         new_utilisateur.setPassword(passwordEncoder.encode(password));
         userRepository.save(new_utilisateur);
 
@@ -54,6 +55,7 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
     public String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         StringBuilder password = new StringBuilder();
