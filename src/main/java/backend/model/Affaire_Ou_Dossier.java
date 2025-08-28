@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @NoArgsConstructor
@@ -19,6 +20,12 @@ public class Affaire_Ou_Dossier {
     private String libelleAffaire;
 
     private boolean archived = false;
+
+    private boolean approbation_affair = false;
+
+    private Double frais_pour_cette_affaire;
+
+    private LocalDate date_debut = null, date_fin = null;
 
     @Enumerated(EnumType.STRING)
     private CategoryAffaire categoryAffaire;

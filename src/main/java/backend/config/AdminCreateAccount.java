@@ -1,7 +1,5 @@
 package backend.config;
 
-
-
 import backend.model.Utilisateur;
 import backend.model.enums.Role;
 import backend.repository.UserRepository;
@@ -11,7 +9,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -45,8 +42,6 @@ public class AdminCreateAccount {
                         "Compte admin crée avec succès, votre mot de passe est : admin1234",
                         "Création compte Administrator"
                 );
-
-
             }
         };
     }

@@ -2,6 +2,7 @@ package backend.service.implentation;
 
 import backend.dto.Affaire_DossierDto;
 import backend.dto.newEntityRequest.NewAffaire;
+import backend.dto.updateEntityRequest.FixerDateAffaire;
 import backend.model.Affaire_Ou_Dossier;
 import backend.repository.Affaire_DossierRepository;
 import backend.service.contract.Affaire_DossierService;
@@ -9,6 +10,7 @@ import backend.service.mapper.AffaireMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -31,8 +33,13 @@ public class Affaire_DossierServiceImpl implements Affaire_DossierService {
     }
 
     @Override
-    public Affaire_DossierDto findById(long id) {
+    public Affaire_DossierDto findDtoObjectById(long id) {
         return affaireMapper.fromEntityToDto(affaire_DossierRepository.findById(id).get());
+    }
+
+    @Override
+    public Affaire_Ou_Dossier findEntityById(long id) {
+        return affaire_DossierRepository.findById(id).orElse(null);
     }
 
     @Override
@@ -50,5 +57,25 @@ public class Affaire_DossierServiceImpl implements Affaire_DossierService {
         Affaire_Ou_Dossier affaireOuDossier = affaire_DossierRepository.findById(idAffaire).get();
         affaireOuDossier.setArchived(true);
         return true;
+    }
+
+    @Override
+    public List<Affaire_DossierDto> findAffairsWePaidFor() {
+        return affaire_DossierRepository.findAffairsWePaidFor().stream().map(affaireMapper::fromEntityToDto).toList();
+    }
+
+    @Override
+    public Boolean approuverAffaire(long idAffaire) {
+        Affaire_Ou_Dossier affaireOuDossier = findEntityById(idAffaire);
+        affaireOuDossier.setApprobation_affair(true);
+        affaire_DossierRepository.save(affaireOuDossier);
+        return true;
+    }
+
+    @Override
+    public Boolean fixerDateDebutAffaire(FixerDateAffaire dto) {
+        Affaire_Ou_Dossier affaireOuDossier = findEntityById(Long.parseLong(dto.getIdAffaire()));
+        affaireOuDossier.setDate_debut(LocalDate.parse(dto.getDateDebut()));
+        return null;
     }
 }

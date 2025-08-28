@@ -7,5 +7,6 @@ public class NewAffaire {
 
     private String libelle_affaire;
     private String categorie_affaire;
+    private Number frais_pour_cette_affaire;
 
 }

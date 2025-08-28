@@ -21,7 +21,8 @@ public enum Role {
                     IMPRIMER_DOCUMENT,
                     ROUTAGE_DOCUMENT,
                     CONSULTER_DOCUMENT,
-                    MODIFIER_PROFIL
+                    MODIFIER_PROFIL,
+                    CONSULTER_AFFAIRE
             )
     ),
 
@@ -64,7 +65,9 @@ public enum Role {
                     MODIFIER_DOCUMENT,
                     SECURISER_DOCUMENT,
                     SUPPRIMER_DOCUMENT,
-                    GERER_COMPTE_UTILISATEUR
+                    GERER_COMPTE_UTILISATEUR,
+                    CONFIGURATION_SYSTEM,
+                    CREER_ORDONNANCEMENT
             )
     );
 

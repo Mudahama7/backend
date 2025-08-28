@@ -16,7 +16,6 @@ public class CustomUserDetails implements UserDetailsService {
     private final UserRepository userRepository;
     private final ConnectedUserMapper connectedUserMapper;
 
-
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Utilisateur utilisateur = userRepository.findByEmail(email)
@@ -24,4 +23,5 @@ public class CustomUserDetails implements UserDetailsService {
 
         return connectedUserMapper.toConnectedUser(utilisateur);
     }
+
 }

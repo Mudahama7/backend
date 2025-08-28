@@ -24,8 +24,7 @@ public class UserController {
     @DeleteMapping("supprimer-utilisateur/{idUser}")
     @PreAuthorize("hasAuthority('gerer_compte_utilisateur')")
     public ResponseEntity<Boolean> supprimer_utilisateur(@PathVariable("idUser") String idUser){
-        System.out.println(idUser);
-        return ResponseEntity.ok(null);
+        return ResponseEntity.ok(userService.supprimer_user(idUser));
     }
 
 }

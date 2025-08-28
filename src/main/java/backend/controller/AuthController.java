@@ -3,7 +3,6 @@ package backend.controller;
 import backend.dto.LoginRequest;
 import backend.dto.LoginResponse;
 import backend.dto.ResetPasswordRequest;
-import backend.model.auth.ConnectedUser;
 import backend.service.contract.AuthService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
