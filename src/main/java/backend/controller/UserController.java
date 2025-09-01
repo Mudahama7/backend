@@ -1,7 +1,7 @@
 package backend.controller;
 
 import backend.dto.newEntityRequest.NewUser;
-import backend.service.contract.UserService;
+import backend.service.business_logic.UserService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

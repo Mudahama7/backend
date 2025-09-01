@@ -1,4 +1,4 @@
-package backend.service.contract;
+package backend.service.business_logic;
 
 import backend.dto.Affaire_DossierDto;
 import backend.dto.newEntityRequest.NewAffaire;
@@ -28,4 +28,5 @@ public interface Affaire_DossierService {
     Boolean approuverAffaire(long idAffaire);
 
     Boolean fixerDateDebutAffaire(FixerDateAffaire dto);
+
 }

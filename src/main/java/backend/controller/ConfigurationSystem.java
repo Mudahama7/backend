@@ -1,7 +1,7 @@
 package backend.controller;
 
 import backend.dto.newEntityRequest.ConfigurerLesDonneesStatiques;
-import backend.service.contract.ConfigurerSystem;
+import backend.service.business_logic.ConfigurerSystem;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

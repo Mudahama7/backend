@@ -1,4 +1,4 @@
-package backend.service.contract;
+package backend.service.business_logic;
 
 import backend.dto.newEntityRequest.NewUser;
 import backend.model.Utilisateur;

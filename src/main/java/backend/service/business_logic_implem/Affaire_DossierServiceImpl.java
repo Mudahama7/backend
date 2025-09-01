@@ -1,11 +1,11 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.Affaire_DossierDto;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.dto.updateEntityRequest.FixerDateAffaire;
 import backend.model.Affaire_Ou_Dossier;
 import backend.repository.Affaire_DossierRepository;
-import backend.service.contract.Affaire_DossierService;
+import backend.service.business_logic.Affaire_DossierService;
 import backend.service.mapper.AffaireMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

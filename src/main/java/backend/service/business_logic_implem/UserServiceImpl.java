@@ -1,9 +1,9 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.newEntityRequest.NewUser;
 import backend.model.Utilisateur;
 import backend.repository.UserRepository;
-import backend.service.contract.UserService;
+import backend.service.business_logic.UserService;
 import backend.service.mapper.UserMapper;
 import backend.service.utils.EmailService;
 import jakarta.mail.MessagingException;

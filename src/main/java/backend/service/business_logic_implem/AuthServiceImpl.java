@@ -1,13 +1,12 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.LoginRequest;
 import backend.dto.LoginResponse;
 import backend.dto.ResetPasswordRequest;
 import backend.model.Utilisateur;
 import backend.model.auth.ConnectedUser;
-import backend.service.contract.AuthService;
-import backend.service.contract.UserService;
-import backend.service.mapper.ConnectedUserMapper;
+import backend.service.business_logic.AuthService;
+import backend.service.business_logic.UserService;
 import backend.service.utils.CustomUserDetails;
 import backend.service.utils.EmailService;
 import backend.service.utils.JwtUtil;

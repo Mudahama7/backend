@@ -3,7 +3,7 @@ package backend.controller;
 import backend.dto.LoginRequest;
 import backend.dto.LoginResponse;
 import backend.dto.ResetPasswordRequest;
-import backend.service.contract.AuthService;
+import backend.service.business_logic.AuthService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;

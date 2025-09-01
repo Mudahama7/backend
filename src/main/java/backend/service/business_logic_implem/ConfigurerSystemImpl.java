@@ -1,9 +1,9 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.newEntityRequest.ConfigurerLesDonneesStatiques;
 import backend.model.ConfigStaticData;
 import backend.repository.ConfigStaticDataRepository;
-import backend.service.contract.ConfigurerSystem;
+import backend.service.business_logic.ConfigurerSystem;
 import backend.service.mapper.DonneesDeConfigurationMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

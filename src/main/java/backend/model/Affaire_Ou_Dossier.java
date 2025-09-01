@@ -23,7 +23,7 @@ public class Affaire_Ou_Dossier {
 
     private boolean approbation_affair = false;
 
-    private Double frais_pour_cette_affaire;
+    private Double frais_pour_cette_affaire = 0.0;
 
     private LocalDate date_debut = null, date_fin = null;
 

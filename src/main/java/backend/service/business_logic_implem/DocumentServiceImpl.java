@@ -1,17 +1,16 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.DocumentDto;
 import backend.dto.newEntityRequest.NewDocument;
 import backend.dto.newEntityRequest.NouvelOrdonnancement;
 import backend.dto.updateEntityRequest.UpdateDocument;
-import backend.model.Affaire_Ou_Dossier;
 import backend.model.ConfigStaticData;
 import backend.model.Document;
 import backend.repository.DocumentRepository;
-import backend.service.contract.Affaire_DossierService;
-import backend.service.contract.ConfigurerSystem;
-import backend.service.contract.DocumentService;
-import backend.service.contract.UserService;
+import backend.service.business_logic.Affaire_DossierService;
+import backend.service.business_logic.ConfigurerSystem;
+import backend.service.business_logic.DocumentService;
+import backend.service.business_logic.UserService;
 import backend.service.mapper.DocumentMapper;
 import backend.service.utils.GenerateurOrdonnancement;
 import lombok.AllArgsConstructor;

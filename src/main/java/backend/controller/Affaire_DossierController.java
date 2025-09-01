@@ -3,7 +3,7 @@ package backend.controller;
 import backend.dto.Affaire_DossierDto;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.dto.updateEntityRequest.FixerDateAffaire;
-import backend.service.contract.Affaire_DossierService;
+import backend.service.business_logic.Affaire_DossierService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -71,7 +71,5 @@ public class Affaire_DossierController {
     public ResponseEntity<Boolean> fixerDateDebutAffaire(@RequestBody FixerDateAffaire fixerDateAffaire){
         return ResponseEntity.ok(affaireDossierService.fixerDateDebutAffaire(fixerDateAffaire));
     }
-
-
 
 }

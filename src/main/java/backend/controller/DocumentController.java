@@ -4,7 +4,7 @@ import backend.dto.DocumentDto;
 import backend.dto.newEntityRequest.NewDocument;
 import backend.dto.newEntityRequest.NouvelOrdonnancement;
 import backend.dto.updateEntityRequest.UpdateDocument;
-import backend.service.contract.DocumentService;
+import backend.service.business_logic.DocumentService;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
@@ -12,8 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.context.Context;
-import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.List;
 

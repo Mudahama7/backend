@@ -5,7 +5,7 @@ import backend.dto.newEntityRequest.NewDocument;
 import backend.dto.updateEntityRequest.UpdateDocument;
 import backend.model.Document;
 import backend.model.enums.TypeDocument;
-import backend.service.contract.Affaire_DossierService;
+import backend.service.business_logic.Affaire_DossierService;
 import backend.service.utils.MinIoService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;

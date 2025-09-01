@@ -1,10 +1,10 @@
-package backend.service.implentation;
+package backend.service.business_logic_implem;
 
 import backend.dto.newEntityRequest.NewBureau;
 import backend.dto.updateEntityRequest.UpdateBureau;
 import backend.model.Bureau;
 import backend.repository.BureauRepository;
-import backend.service.contract.BureauService;
+import backend.service.business_logic.BureauService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

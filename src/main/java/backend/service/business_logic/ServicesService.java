@@ -1,4 +1,4 @@
-package backend.service.contract;
+package backend.service.business_logic;
 
 import backend.dto.newEntityRequest.NewService;
 import backend.dto.updateEntityRequest.UpdateDepartement;
