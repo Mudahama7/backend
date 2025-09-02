@@ -29,4 +29,9 @@ public class AuthController {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
     }
 
+    @PostMapping("test-desployment")
+    public ResponseEntity<String> testDeployment(){
+        return ResponseEntity.ok("Hello World");
+    }
+
 }
