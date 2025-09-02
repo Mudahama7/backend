@@ -18,17 +18,17 @@ public class UserMapper {
     public Utilisateur fromNewUserRequestToUser(NewUser newUser) {
         Utilisateur utilisateur = new Utilisateur();
 
-//        utilisateur.setEmail(newUser.getEmail());
-//        utilisateur.setNom(newUser.getNom());
-//        utilisateur.setBureau(bureauService.findByLibelleBureau(newUser.getBureau()));
-//        utilisateur.setDateNaissance(LocalDate.parse(newUser.getDate_naissance()));
-//        utilisateur.setPhone(newUser.getPhone());
-//        utilisateur.setPrenom(newUser.getPrenom());
-//        utilisateur.setFunction(newUser.getFunction());
-//        utilisateur.setProfession(newUser.getProfession());
-//        utilisateur.setProfile(newUser.getProfile());
-//        utilisateur.setSex(newUser.getSex());
-//        utilisateur.setRole(Role.valueOf(newUser.getRole().toUpperCase()));
+        utilisateur.setEmail(newUser.getEmail());
+        utilisateur.setNom(newUser.getNom());
+        utilisateur.setBureau(bureauService.findByLibelleBureau(newUser.getBureau()));
+        utilisateur.setDateNaissance(LocalDate.parse(newUser.getDate_naissance()));
+        utilisateur.setPhone(newUser.getPhone());
+        utilisateur.setPrenom(newUser.getPrenom());
+        utilisateur.setFunction(newUser.getFunction());
+        utilisateur.setProfession(newUser.getProfession());
+        utilisateur.setProfile(newUser.getProfile());
+        utilisateur.setSex(newUser.getSex());
+        utilisateur.setRole(Role.valueOf(newUser.getRole().toUpperCase()));
 
         return utilisateur;
 
