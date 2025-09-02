@@ -1,9 +1,10 @@
 spring:
   datasource:
-    url: ${SPRING_DATASOURCE_URL}
-    username: ${SPRING_DATASOURCE_USERNAME}
-    password: ${SPRING_DATASOURCE_PASSWORD}
+    url: jdbc:postgresql://dpg-d2rbsdidbo4c73d48hi0-a:5432/sgedj
+    username: mudahama
+    password: QT5sn6vDmgHuM4naM8HJIpaEYsiHXOqM
     driver-class-name: org.postgresql.Driver
+   
   jpa:
     hibernate:
       ddl-auto: update
