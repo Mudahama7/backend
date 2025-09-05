@@ -1,8 +1,8 @@
 package backend.controller;
 
-import backend.dto.LoginRequest;
-import backend.dto.LoginResponse;
-import backend.dto.ResetPasswordRequest;
+import backend.dto.auth.LoginRequest;
+import backend.dto.auth.LoginResponse;
+import backend.dto.auth.ResetPasswordRequest;
 import backend.service.business_logic.AuthService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
@@ -27,11 +27,6 @@ public class AuthController {
     @PostMapping("resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
-    }
-
-    @PostMapping("test-desployment")
-    public ResponseEntity<String> testDeployment(){
-        return ResponseEntity.ok("Hello World");
     }
 
 }

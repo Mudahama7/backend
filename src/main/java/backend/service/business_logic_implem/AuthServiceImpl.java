@@ -1,12 +1,12 @@
 package backend.service.business_logic_implem;
 
-import backend.dto.LoginRequest;
-import backend.dto.LoginResponse;
-import backend.dto.ResetPasswordRequest;
+import backend.dto.auth.LoginRequest;
+import backend.dto.auth.LoginResponse;
+import backend.dto.auth.ResetPasswordRequest;
 import backend.model.Utilisateur;
 import backend.model.auth.ConnectedUser;
 import backend.service.business_logic.AuthService;
-import backend.service.business_logic.UserService;
+import backend.service.business_logic.UtilisateurService;
 import backend.service.utils.CustomUserDetails;
 import backend.service.utils.EmailService;
 import backend.service.utils.JwtUtil;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthServiceImpl implements AuthService {
 
-    private final UserService userService;
+    private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
     private final AuthenticationManager authenticationManager;
@@ -35,22 +35,22 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
         ConnectedUser connectedUser = (ConnectedUser) customUserDetails.loadUserByUsername(loginRequest.getEmail());
-        Utilisateur user = userService.findByEmail(loginRequest.getEmail());
+        Utilisateur user = utilisateurService.getUtilisateurByEmail(loginRequest.getEmail());
 
         return LoginResponse.builder()
                 .token(jwtUtil.generateToken(connectedUser))
                 .role(user.getRole().toString())
-                .fullname(user.getNom()+" "+user.getPrenom())
+                .fullname(user.getNomComplet())
                 .build();
     }
 
     @Override
     public boolean resetPassword(ResetPasswordRequest resetPasswordRequest) throws MessagingException {
-        Utilisateur user = userService.findByEmail(resetPasswordRequest.getEmail());
+        Utilisateur user = utilisateurService.getUtilisateurByEmail(resetPasswordRequest.getEmail());
         if (user != null){
-            String newPassword = userService.generatePassword();
+            String newPassword = utilisateurService.generatePassword();
             String mailText = "Bonjour, votre mot de passe a été réinitialisé avec succès, vous pouvez vous connectez maintenant grace au mot de passe suivant : " + newPassword;
-            user.setPassword(passwordEncoder.encode(newPassword));
+            user.setMotDePasse(passwordEncoder.encode(newPassword));
             emailService.sendEmail(
                     user.getEmail(),
                     mailText,

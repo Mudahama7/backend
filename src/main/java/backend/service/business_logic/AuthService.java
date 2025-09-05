@@ -1,8 +1,8 @@
 package backend.service.business_logic;
 
-import backend.dto.LoginRequest;
-import backend.dto.LoginResponse;
-import backend.dto.ResetPasswordRequest;
+import backend.dto.auth.LoginRequest;
+import backend.dto.auth.LoginResponse;
+import backend.dto.auth.ResetPasswordRequest;
 import jakarta.mail.MessagingException;
 
 public interface AuthService {

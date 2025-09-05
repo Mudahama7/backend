@@ -1,7 +1,6 @@
 package backend.config;
 
 import backend.model.auth.ConnectedUser;
-import backend.service.mapper.ConnectedUserMapper;
 import backend.service.utils.CustomUserDetails;
 import backend.service.utils.JwtUtil;
 import jakarta.servlet.FilterChain;

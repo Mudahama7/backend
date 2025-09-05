@@ -15,26 +15,20 @@ public class Utilisateur {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    private int idUtilisateur;
+    private String nomComplet;
     private String email;
-    private String password;
-    private String nom;
-    private String prenom;
-    private String profession;
-    private LocalDate dateNaissance;
-    private String profile;
-    private String function;
-    private String phone;
-    private char sex;
-
-    @Enumerated(EnumType.STRING)
+    private LocalDate dateCreationCompte =  LocalDate.now();
     private Role role;
+    private String telephone;
+    private String motDePasse;
+    private String photoProfilUrl;
+    private String signatureUrlImage;
 
-    @ManyToOne
-    private Bureau bureau = null;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "ajouteePar")
+    private List<PieceJointeAuDossier> toutesMesPieces;
 
-    @OneToMany(mappedBy = "utilisateur",  cascade = CascadeType.ALL)
-    private List<Document> documents;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "auteurPartage")
+    private List<HistoriquePartageDuDossier> historiquePartageDuDossiers;
 
 }
