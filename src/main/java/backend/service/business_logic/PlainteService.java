@@ -4,12 +4,13 @@ import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.model.Plainte;
+import jakarta.mail.MessagingException;
 
 import java.util.List;
 
 public interface PlainteService {
 
-    boolean createAffaire(NewAffaire newAffaire);
+    boolean createAffaire(NewAffaire newAffaire) throws MessagingException;
 
     Plainte findById(String id);
 

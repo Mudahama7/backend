@@ -20,7 +20,10 @@ public class PartiesPrenantesAuProces {
     private String email;
     private String identifiantLegal;
 
-    @OneToMany(mappedBy = "plaignant",  cascade = CascadeType.ALL)
-    private List<Plainte> plaintes;
+    @OneToMany(mappedBy = "plaignant", cascade = CascadeType.ALL)
+    private List<Plainte> plaintesCommePlaignant;
+
+    @OneToMany(mappedBy = "defendeur", cascade = CascadeType.ALL)
+    private List<Plainte> plaintesCommeDefendeur;
 
 }

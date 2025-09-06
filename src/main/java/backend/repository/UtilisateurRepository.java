@@ -11,7 +11,8 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
 
     Optional<Utilisateur> findByEmail(String email);
 
-    @Query("SELECT u FROM Utilisateur u WHERE u.role != 'ADMINISTRATOR'")
+    @Query("SELECT u FROM Utilisateur u WHERE u.role <> backend.model.enums.Role.ADMINISTRATOR")
     List<Utilisateur> findAllUsers();
+
 
 }

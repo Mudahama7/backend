@@ -17,10 +17,12 @@ public class Plainte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDossier;
 
-    private LocalDate dateDepotPlainte = LocalDate.now();
 
     @ManyToOne
     private PartiesPrenantesAuProces plaignant;
+
+    @ManyToOne
+    private PartiesPrenantesAuProces defendeur;
 
     private String natureLitige;
 
@@ -30,14 +32,20 @@ public class Plainte {
     @Column(columnDefinition = "TEXT")
     private String descriptionDesFaits;
 
-    private Double MontantLitige;
     private String autresParties;
 
-    private boolean validationGreffier;
-    private boolean validationPresident;
+    private LocalDate dateDepotPlainte = LocalDate.now();
+
+    private Double montantLitige = 0.0;
+
+    private boolean sharedWithGreffier = false;
+    private boolean sharedWithPresident = false;
+
+    private boolean validationGreffier = false;
+    private boolean validationPresident = false;
 
     @Enumerated(EnumType.STRING)
-    private StatutDossier statutDossier;
+    private StatutDossier statutDossier = StatutDossier.Depose;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "plainte")
     private List<PieceJointeAuDossier> pieceJointeAuDossiers;

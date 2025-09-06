@@ -4,6 +4,7 @@ import backend.dto.auth.LoginRequest;
 import backend.dto.auth.LoginResponse;
 import backend.dto.auth.ResetPasswordRequest;
 import backend.service.business_logic.AuthService;
+import backend.service.utils.SupabaseStorageService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
+
 @AllArgsConstructor
 @RestController
 @RequestMapping("api/authentication/")
 public class AuthController {
 
     private final AuthService authService;
+    private final SupabaseStorageService supabaseStorageService;
 
     @PostMapping("login")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
@@ -27,6 +31,11 @@ public class AuthController {
     @PostMapping("resetPassword")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
+    }
+
+    @PostMapping("test-cloud-storage")
+    public boolean testCloudStorage() throws IOException {
+        return supabaseStorageService.uploadFile("/home/mdh/software-design/pillar_app/Memoire MUHINDO MULENDA Pillar.docx","fichier-test");
     }
 
 }
