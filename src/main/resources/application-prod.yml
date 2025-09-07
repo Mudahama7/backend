@@ -3,9 +3,9 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://dpg-d2rbsdidbo4c73d48hi0-a:5432/sgedj
+    url: jdbc:postgresql://dpg-d2ucn36r433s73e6jsv0-a:5432/sgdej_database
     username: mudahama
-    password: QT5sn6vDmgHuM4naM8HJIpaEYsiHXOqM
+    password: 6z1B1gFJwfW8bbqrWa3IkLYD0q9WV6FX
     driver-class-name: org.postgresql.Driver
 
   jpa:

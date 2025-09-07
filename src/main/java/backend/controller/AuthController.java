@@ -33,9 +33,5 @@ public class AuthController {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
     }
 
-    @PostMapping("test-cloud-storage")
-    public boolean testCloudStorage() throws IOException {
-        return supabaseStorageService.uploadFile("/home/mdh/software-design/pillar_app/Memoire MUHINDO MULENDA Pillar.docx","fichier-test");
-    }
 
 }
