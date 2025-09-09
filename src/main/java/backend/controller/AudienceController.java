@@ -28,7 +28,7 @@ public class AudienceController {
     private final PlainteService  plainteService;
 
     @PreAuthorize("hasAuthority('fixer_date_pour_une_affaire')")
-    @PostMapping("nouvelle_audience")
+    @PostMapping("nouvelle_audience/")
     public ResponseEntity<?> nouvelleAudience(@RequestBody NewAudience newAudience) throws IOException, MessagingException {
         if (audienceService.verifyIfSignaturesExist()) {
 

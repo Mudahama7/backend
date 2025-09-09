@@ -23,12 +23,13 @@ public class AuthController {
     private final AuthService authService;
     private final SupabaseStorageService supabaseStorageService;
 
-    @PostMapping("login")
+    @PostMapping("login/")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authService.login(loginRequest));
     }
 
-    @PostMapping("resetPassword")
+    // TODO : prevoir un bad request au cas où l'email n'existe pas
+    @PostMapping("resetPassword/")
     public ResponseEntity<Boolean> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
     }

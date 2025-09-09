@@ -24,7 +24,7 @@ public class JugementController {
     private final PlainteService plainteService;
 
     @PreAuthorize("hasAuthority('prononcer_son_jugement')")
-    @PostMapping("en_prononcer_un")
+    @PostMapping("en_prononcer_un/")
     public ResponseEntity<?> prononcerSonJugement(
             @RequestParam("idDossier") String idDossier,
             @RequestParam("montantDommage") String montantDommage,

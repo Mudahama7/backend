@@ -20,7 +20,7 @@ public class UserController {
     private final UtilisateurService utilisateurService;
 
     @PreAuthorize("hasAuthority('gerer_compte_utilisateur')")
-    @PostMapping("ajouter_utilisateur")
+    @PostMapping("ajouter_utilisateur/")
     public ResponseEntity<?> ajouterUtilisateur(@RequestBody NewUtilisateur newUtilisateur) throws MessagingException {
         if (utilisateurService.verifyIfUserAlreadyExists(newUtilisateur.getEmail())) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
@@ -33,14 +33,14 @@ public class UserController {
 
 
     @PreAuthorize("hasAuthority('gerer_compte_utilisateur')")
-    @PostMapping("supprimer_utilisateur/{idUser}")
+    @DeleteMapping("supprimer_utilisateur/{idUser}/")
     public ResponseEntity<Boolean> supprimerUtilisateur(@PathVariable("idUser") String idUser) {
         return ResponseEntity.ok(utilisateurService.supprimer_user(idUser));
     }
 
 
     @PreAuthorize("hasAuthority('gerer_compte_utilisateur')")
-    @PostMapping("get_all")
+    @GetMapping("get_all/")
     public ResponseEntity<List<UserDtoPourList>> findAll() {
         return ResponseEntity.ok(utilisateurService.getAll());
     }

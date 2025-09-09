@@ -34,7 +34,7 @@ public class PartageDossierController {
     private final PlainteService plainteService;
 
     @PreAuthorize("hasAuthority('partager_une_affaire')")
-    @PostMapping("en_partager_un")
+    @PostMapping("en_partager_un/")
     public ResponseEntity<?> partagerUnDossier(@RequestBody NewSharingAffaireRequest  newSharingAffaireRequest) throws IOException, MessagingException {
 
         Utilisateur user = connectedUserGetter.getConnectedUser();
