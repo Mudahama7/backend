@@ -4,10 +4,14 @@ import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.model.Plainte;
+import backend.model.Utilisateur;
 import backend.model.enums.StatutDossier;
 import backend.repository.PlainteRepository;
+import backend.service.business_logic.PartageAffaireService;
 import backend.service.business_logic.PlainteService;
+import backend.service.mapper.PartageDossierMapper;
 import backend.service.mapper.PlainteMapper;
+import backend.service.utils.ConnectedUserGetter;
 import backend.service.utils.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
@@ -22,10 +26,15 @@ public class PlainteServiceImpl implements PlainteService {
     private final PlainteRepository plainteRepository;
     private final PlainteMapper plainteMapper;
     private final EmailService emailService;
+    private final ConnectedUserGetter connectedUserGetter;
+    private final PartageAffaireService partageAffaireService;
+
 
     @Override
     public boolean createAffaire(NewAffaire newAffaire) throws MessagingException {
+
         Plainte plainte = plainteMapper.mapFromNewPlainteRequestToEntity(newAffaire);
+        plainte.setDeposeChez(connectedUserGetter.getConnectedUser());
 
         plainteRepository.save(plainte);
         sendMailPourPrevenirLeConcerne(newAffaire.getDefendeur().getEmail(), newAffaire.getDefendeur().getNom());
@@ -57,7 +66,14 @@ public class PlainteServiceImpl implements PlainteService {
 
     @Override
     public List<AffaireDtoPourList> findAll() {
-        return plainteRepository.findAll().stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+        return plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUserGetter.getConnectedUser()).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+    }
+
+    @Override
+    public List<AffaireDtoPourList> findDossiersQuiMeSontPartages() {
+        Utilisateur user = connectedUserGetter.getConnectedUser();
+
+        return partageAffaireService.findAllByNomDestinataire(user.getNomComplet()).stream().map(plainteMapper::mapFromHistoriqueDePartage).toList();
     }
 
     @Override
@@ -67,17 +83,23 @@ public class PlainteServiceImpl implements PlainteService {
 
     @Override
     public AffaireDetails findAllAffairDetails(String id) {
-        return null;
+        return plainteMapper.mapFromPlainteEntityToPlainteDetails(findById(id));
     }
 
     @Override
     public Boolean approbationAffaireGreffier(String idAffaire) {
-
-        return null;
+        Plainte plainte = findById(idAffaire);
+        plainte.setValidationGreffier(true);
+        plainteRepository.save(plainte);
+        return true;
     }
 
     @Override
     public Boolean approbationAffairePresident(String idAffaire) {
-        return null;
+        Plainte plainte = findById(idAffaire);
+        plainte.setValidationPresident(true);
+        plainteRepository.save(plainte);
+        return true;
     }
+
 }

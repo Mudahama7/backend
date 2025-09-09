@@ -1,6 +1,6 @@
 package backend.service.mapper;
 
-import backend.dto.newEntityRequest.subObjects.PartiesPrenantes;
+import backend.dto.subObjects.PartiesPrenantes;
 import backend.model.PartiesPrenantesAuProces;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +17,16 @@ public class PartiesPrenantesMapper {
         partiesPrenantesAuProces.setEmail(partiesPrenantesAuProces.getEmail());
 
         return partiesPrenantesAuProces;
+    }
+
+    public PartiesPrenantes mapFromEntityToDtoForPlainteDetails(PartiesPrenantesAuProces partiesPrenantesAuProcess) {
+        return PartiesPrenantes.builder()
+                .nom(partiesPrenantesAuProcess.getNom())
+                .adresse(partiesPrenantesAuProcess.getAdresse())
+                .email(partiesPrenantesAuProcess.getEmail())
+                .identifiantLegal(partiesPrenantesAuProcess.getIdentifiantLegal())
+                .telephone(partiesPrenantesAuProcess.getTelephone())
+                .build();
     }
 
 }

@@ -17,7 +17,6 @@ public class Plainte {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int idDossier;
 
-
     @ManyToOne
     private PartiesPrenantesAuProces plaignant;
 
@@ -38,9 +37,6 @@ public class Plainte {
 
     private Double montantLitige = 0.0;
 
-    private boolean sharedWithGreffier = false;
-    private boolean sharedWithPresident = false;
-
     private boolean validationGreffier = false;
     private boolean validationPresident = false;
 
@@ -53,10 +49,13 @@ public class Plainte {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier")
     private List<Audience> listeDAudiences;
 
-    @OneToOne(mappedBy = "idDossier")
-    private JugementFinal jugementFinal;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier")
+    private List<JugementFinal> jugementFinal;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "affaireShared")
     private List<HistoriquePartageDuDossier> historiquePartageDuDossiers;
+
+    @ManyToOne
+    private Utilisateur deposeChez;
 
 }

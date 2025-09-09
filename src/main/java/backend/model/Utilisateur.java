@@ -28,6 +28,9 @@ public class Utilisateur {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "ajouteePar")
     private List<PieceJointeAuDossier> toutesMesPieces;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "deposeChez")
+    private List<Plainte> tousMesDossiers;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "auteurPartage")
     private List<HistoriquePartageDuDossier> historiquePartageDuDossiers;
 

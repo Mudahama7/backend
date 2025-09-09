@@ -1,7 +1,9 @@
-package backend.dto.newEntityRequest.subObjects;
+package backend.dto.subObjects;
 
+import lombok.Builder;
 import lombok.Data;
 
+@Builder
 @Data
 public class PartiesPrenantes {
 

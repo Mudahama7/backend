@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @Data
 @Entity
@@ -15,11 +17,15 @@ public class Audience {
 
     @ManyToOne
     private Plainte idDossier;
+
+    private LocalDate date_creation =  LocalDate.now();
+
     private String anneeAudience;
     private String jourAudience;
     private String moisAudience;
     private String dateAudience;
     private String heureAudience;
     private String causeInscrit;
+    private String urlFile;
 
 }

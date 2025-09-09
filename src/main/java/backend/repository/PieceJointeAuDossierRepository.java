@@ -1,7 +1,13 @@
 package backend.repository;
 
-import backend.model.JugementFinal;
+import backend.model.PieceJointeAuDossier;
+import backend.model.Plainte;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface PieceJointeAuDossierRepository extends JpaRepository<JugementFinal, Integer> {
+import java.util.List;
+
+public interface PieceJointeAuDossierRepository extends JpaRepository<PieceJointeAuDossier, Integer> {
+
+    List<PieceJointeAuDossier> findAllByPlainte(Plainte plainte);
+
 }

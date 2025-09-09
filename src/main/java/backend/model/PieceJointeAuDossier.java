@@ -28,7 +28,6 @@ public class PieceJointeAuDossier {
     private LocalDate dateAjout = LocalDate.now();
 
     @ManyToOne
-    @JoinColumn(name = "utilisateur")
     private Utilisateur ajouteePar;
 
 }

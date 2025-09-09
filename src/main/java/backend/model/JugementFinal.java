@@ -16,7 +16,7 @@ public class JugementFinal {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL)
     private Plainte idDossier;
 
     private LocalDate dateJugement =  LocalDate.now();

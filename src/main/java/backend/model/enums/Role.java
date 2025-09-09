@@ -22,7 +22,8 @@ public enum Role {
                     ROUTAGE_DOCUMENT,
                     CONSULTER_DOCUMENT,
                     MODIFIER_PROFIL,
-                    CONSULTER_AFFAIRE
+                    CONSULTER_AFFAIRE,
+                    PARTAGER_UNE_AFFAIRE
             )
     ),
 
@@ -42,7 +43,8 @@ public enum Role {
                     MODIFIER_DOCUMENT,
                     VALIDER_DOCUMENT,
                     SECURISER_DOCUMENT,
-                    SUPPRIMER_DOCUMENT
+                    SUPPRIMER_DOCUMENT,
+                    PRONONCER_SON_JUGEMENT
             )
     ),
 
@@ -67,7 +69,10 @@ public enum Role {
                     SUPPRIMER_DOCUMENT,
                     GERER_COMPTE_UTILISATEUR,
                     CONFIGURATION_SYSTEM,
-                    CREER_ORDONNANCEMENT
+                    CREER_ORDONNANCEMENT,
+
+                    PRONONCER_SON_JUGEMENT,
+                    CREATE_AFFAIRE
             )
     );
 

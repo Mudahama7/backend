@@ -7,8 +7,11 @@ import lombok.Data;
 @Data
 public class LoginResponse {
 
-    private String token;
-    private String fullname;
+    private String nomComplet;
+    private String email;
+    private String telephone;
     private String role;
+    private String photoProfil;
+    private String token;
 
 }

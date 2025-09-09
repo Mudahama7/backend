@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class AffaireDtoPourList {
 
+    private String idPlainte;
     private String libelePlainte;
     private String statutPlainte;
 

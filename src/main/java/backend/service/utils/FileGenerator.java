@@ -6,9 +6,9 @@ import org.springframework.stereotype.Service;
 import java.io.ByteArrayOutputStream;
 
 @Service
-public class AudienceFileGenerator {
+public class FileGenerator {
 
-    public byte[] genererOrdonnancementDeFixationDeDate(String htmlContent) {
+    public byte[] generateFileFromHtml(String htmlContent) {
         return getBytes(htmlContent);
     }
 

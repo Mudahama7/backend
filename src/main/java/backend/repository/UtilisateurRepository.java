@@ -1,6 +1,7 @@
 package backend.repository;
 
 import backend.model.Utilisateur;
+import backend.model.enums.Role;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,5 +15,8 @@ public interface UtilisateurRepository extends JpaRepository<Utilisateur, Intege
     @Query("SELECT u FROM Utilisateur u WHERE u.role <> backend.model.enums.Role.ADMINISTRATOR")
     List<Utilisateur> findAllUsers();
 
+    Optional<Utilisateur> findByRole(Role role);
+
+    Optional<Utilisateur> findByNomComplet(String nomComplet);
 
 }

@@ -73,6 +73,10 @@
             color: #888;
             font-size: 11pt;
         }
+        .signature-box img{
+            width: 100%;
+            height: 100%;
+        }
 
 
         .sign .label { font-weight: 600; margin-bottom: 8px; }
@@ -93,13 +97,17 @@
         <div>Tribunal de Commerce de Goma</div>
     </div>
 
+    <div class="emblem">
+        <img src="assets_images/embleme.png" alt="emblem"/>
+    </div>
+
     <div class="center smallcaps muted" style="margin-bottom:8px">Cabinet du Président</div>
 
     <h1 class="title">ORDONNANCE DE FIXATION DE DATE D'AUDIENCE</h1>
     <br />
 
     <p>
-        L’an deux mille vingt-cinq, le
+        L’an <span th:text="${annee}"> deux mille vingt cinq </span>, le
         <span th:text="${jour_du_mois}"> ... </span>
         jour du mois de
         <span th:text="${mois}"> ... </span>
@@ -113,7 +121,7 @@
 
     <p>
         Fixons à l’audience publique du
-        <span th:text="${date_audience}">.../.../...</span> à 09 heures du matin, la cause inscrite sous
+        <span th:text="${date_audience}">.../.../...</span> à <span th:text="${heure_debut}">... : ...</span>, la cause inscrite sous
         <span th:text="${cause_inscrite_sous}">......</span>
         ;
     </p>
@@ -125,11 +133,15 @@
     <div class="sign-row">
         <div class="sign">
             <div class="label">Le Greffier Divisionnaire</div>
-            <div class="signature-box">Signature</div>
+            <div class="signature-box">
+                <img th:src="@{${signature_greffier}}" alt="Signature du Greffier" />
+            </div>
         </div>
         <div class="sign">
             <div class="label">Le Président</div>
-            <div class="signature-box">Signature</div>
+            <div class="signature-box">
+                <img th:src="@{${signature_president}}" alt="Signature du Président" />
+            </div>
         </div>
     </div>
 

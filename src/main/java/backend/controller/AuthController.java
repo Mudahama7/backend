@@ -29,9 +29,8 @@ public class AuthController {
     }
 
     @PostMapping("resetPassword")
-    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
+    public ResponseEntity<Boolean> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {
         return ResponseEntity.ok(authService.resetPassword(resetPasswordRequest));
     }
-
 
 }

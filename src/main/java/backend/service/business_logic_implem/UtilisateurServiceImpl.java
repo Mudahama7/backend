@@ -1,9 +1,11 @@
 package backend.service.business_logic_implem;
 
 import backend.dto.UserDtoPourList;
+import backend.dto.UserSignatures;
 import backend.dto.newEntityRequest.NewUtilisateur;
 import backend.dto.updateEntityRequest.UpdateAccountUser;
 import backend.model.Utilisateur;
+import backend.model.enums.Role;
 import backend.repository.UtilisateurRepository;
 import backend.service.business_logic.UtilisateurService;
 import backend.service.mapper.UtilisateurMapper;
@@ -14,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -28,6 +31,12 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public Utilisateur getUtilisateurByEmail(String email) {
         Optional<Utilisateur> user = utilisateurRepository.findByEmail(email);
+        return user.orElse(null);
+    }
+
+    @Override
+    public Utilisateur getUserByNom(String nom) {
+        Optional<Utilisateur> user = utilisateurRepository.findByNomComplet(nom);
         return user.orElse(null);
     }
 
@@ -86,4 +95,21 @@ public class UtilisateurServiceImpl implements UtilisateurService {
         }
         return password.toString();
     }
+
+    @Override
+    public UserSignatures getUserSignaturesUrl(Role role) {
+        return utilisateurRepository.findByRole(role)
+                .map(utilisateur -> UserSignatures.builder()
+                        .userSignatureUrl(utilisateur.getSignatureUrlImage())
+                        .userName(utilisateur.getNomComplet())
+                        .email(utilisateur.getEmail())
+                        .build())
+                .orElse(null);
+    }
+
+    @Override
+    public boolean verifyIfUserAlreadyExists(String email) {
+        return getUtilisateurByEmail(email) != null;
+    }
+
 }

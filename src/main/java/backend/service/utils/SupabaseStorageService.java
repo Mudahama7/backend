@@ -1,10 +1,8 @@
 package backend.service.utils;
+
 import okhttp3.*;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
 import java.io.IOException;
-import java.util.Objects;
 
 @Service
 public class SupabaseStorageService {
@@ -15,16 +13,14 @@ public class SupabaseStorageService {
 
     private final OkHttpClient client = new OkHttpClient();
 
-    public String uploadFile(MultipartFile file) throws IOException {
-        String filename = Objects.requireNonNull(file.getOriginalFilename());
-        byte[] bytes = file.getBytes();
+    public String uploadFile(byte[] fileBytes, String filename, String contentType) throws IOException {
 
-        RequestBody body = RequestBody.create(bytes, MediaType.parse(Objects.requireNonNull(file.getContentType())));
+        RequestBody body = RequestBody.create(fileBytes, MediaType.parse(contentType));
 
         Request request = new Request.Builder()
                 .url(supabaseUrl + "/storage/v1/object/" + bucket + "/" + filename)
                 .addHeader("Authorization", "Bearer " + apiKey)
-                .addHeader("Content-Type", file.getContentType())
+                .addHeader("Content-Type", contentType)
                 .put(body)
                 .build();
 

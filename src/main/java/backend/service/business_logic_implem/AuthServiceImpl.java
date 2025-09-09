@@ -32,15 +32,18 @@ public class AuthServiceImpl implements AuthService {
     public LoginResponse login(LoginRequest loginRequest) {
 
         authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getMotDePasse()));
 
         ConnectedUser connectedUser = (ConnectedUser) customUserDetails.loadUserByUsername(loginRequest.getEmail());
         Utilisateur user = utilisateurService.getUtilisateurByEmail(loginRequest.getEmail());
 
         return LoginResponse.builder()
-                .token(jwtUtil.generateToken(connectedUser))
+                .nomComplet(user.getNomComplet())
+                .email(user.getEmail())
+                .telephone(user.getTelephone())
                 .role(user.getRole().toString())
-                .fullname(user.getNomComplet())
+                .photoProfil(user.getPhotoProfilUrl())
+                .token(jwtUtil.generateToken(connectedUser))
                 .build();
     }
 

@@ -15,11 +15,11 @@ public class HistoriquePartageDuDossier {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String nomDestinateur;
+    private String nomDestinataire;
 
     @Lob
     @Column(columnDefinition = "TEXT")
-    private String resumePartage;
+    private String resumeDossierPartage;
 
     private LocalDate datePartageDossier =  LocalDate.now();
     private LocalDate dateLectureDossierPartage;
