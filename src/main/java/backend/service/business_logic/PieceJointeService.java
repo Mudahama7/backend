@@ -1,7 +1,6 @@
 package backend.service.business_logic;
 
 import backend.dto.newEntityRequest.NewPieceJointe;
-import backend.model.Audience;
 import backend.model.PieceJointeAuDossier;
 import backend.model.Plainte;
 

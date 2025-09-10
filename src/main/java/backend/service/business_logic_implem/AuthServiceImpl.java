@@ -59,7 +59,9 @@ public class AuthServiceImpl implements AuthService {
                     mailText,
                     "Réinitialisation du mot de passe"
             );
+            return true;
+        }else {
+            return false;
         }
-        return false;
     }
 }
