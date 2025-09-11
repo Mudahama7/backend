@@ -12,6 +12,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -31,8 +32,14 @@ public class PlainteController {
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("find_affaires_secretaire/")
     public ResponseEntity<List<AffaireDtoPourList>> findAffairesSecretaires(){
-        System.out.println("hello");
         return ResponseEntity.ok(plainteService.findAll());
+    }
+
+
+    @PreAuthorize("hasAuthority('consulter_affaire')")
+    @GetMapping("find_affaires_secretaire_amount/")
+    public ResponseEntity<Map<String, Object>> findAffairesSecretairesAmount(){
+        return ResponseEntity.ok(plainteService.findAll_Amount());
     }
 
     @PreAuthorize("hasAuthority('consulter_affaire')")

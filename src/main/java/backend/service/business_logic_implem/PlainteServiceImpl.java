@@ -18,7 +18,9 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @Service
@@ -103,6 +105,22 @@ public class PlainteServiceImpl implements PlainteService {
         plainte.setValidationPresident(true);
         plainteRepository.save(plainte);
         return true;
+    }
+
+    @Override
+    public Map<String, Object> findAll_Amount() {
+        Utilisateur user = connectedUserGetter.getConnectedUser();
+        Map<String, Object> plainteDeposeesChezMoi = new HashMap<>();
+
+        plainteDeposeesChezMoi.put("tous", plainteRepository.findTousLesDossiersDeposeChezMoi(user).size());
+        plainteDeposeesChezMoi.put("depose", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Depose, user).size());
+        plainteDeposeesChezMoi.put("verifie", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Verifie, user).size());
+        plainteDeposeesChezMoi.put("transmis", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Transmis, user).size());
+        plainteDeposeesChezMoi.put("encours", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, user).size());
+        plainteDeposeesChezMoi.put("juge", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, user).size());
+        plainteDeposeesChezMoi.put("archive", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Archive, user).size());
+
+        return plainteDeposeesChezMoi;
     }
 
 }

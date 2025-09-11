@@ -8,6 +8,7 @@ import backend.model.Plainte;
 import jakarta.mail.MessagingException;
 
 import java.util.List;
+import java.util.Map;
 
 public interface PlainteService {
 
@@ -26,5 +27,7 @@ public interface PlainteService {
     Boolean approbationAffaireGreffier(String idAffaire);
 
     Boolean approbationAffairePresident(String idAffaire);
+
+    Map<String, Object> findAll_Amount();
 
 }
