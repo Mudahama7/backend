@@ -1,5 +1,5 @@
 server:
-  port: 8080
+  port: 8081
 spring:
   application:
     name: backend
@@ -8,6 +8,8 @@ spring:
     username: mudahama
     password: 7_mdh_79
     driver-class-name: org.postgresql.Driver
+    hikari:
+      auto-commit: false
 
   jpa:
     hibernate:

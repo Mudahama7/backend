@@ -31,6 +31,7 @@ public class PlainteController {
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("find_affaires_secretaire/")
     public ResponseEntity<List<AffaireDtoPourList>> findAffairesSecretaires(){
+        System.out.println("hello");
         return ResponseEntity.ok(plainteService.findAll());
     }
 

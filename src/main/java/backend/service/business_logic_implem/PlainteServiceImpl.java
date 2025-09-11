@@ -16,6 +16,7 @@ import backend.service.utils.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -64,11 +65,13 @@ public class PlainteServiceImpl implements PlainteService {
         return plainteRepository.findById(Integer.parseInt(id)).orElse(null);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AffaireDtoPourList> findAll() {
         return plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUserGetter.getConnectedUser()).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AffaireDtoPourList> findDossiersQuiMeSontPartages() {
         Utilisateur user = connectedUserGetter.getConnectedUser();
