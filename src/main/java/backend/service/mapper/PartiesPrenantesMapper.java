@@ -2,30 +2,37 @@ package backend.service.mapper;
 
 import backend.dto.subObjects.PartiesPrenantes;
 import backend.model.PartiesPrenantesAuProces;
+import backend.repository.PartiesPrenantesAuProcesRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+@AllArgsConstructor
 @Service
 public class PartiesPrenantesMapper {
 
-    public PartiesPrenantesAuProces mapFromDtoToEntity(PartiesPrenantes partiesPrenantesAuProcess) {
+    private final PartiesPrenantesAuProcesRepository partiesPrenantesAuProcesRepository;
+
+    public PartiesPrenantesAuProces mapFromDtoToEntity(PartiesPrenantes dto) {
         PartiesPrenantesAuProces partiesPrenantesAuProces = new PartiesPrenantesAuProces();
 
-        partiesPrenantesAuProces.setAdresse(partiesPrenantesAuProces.getAdresse());
-        partiesPrenantesAuProces.setNom(partiesPrenantesAuProces.getNom());
-        partiesPrenantesAuProces.setTelephone(partiesPrenantesAuProces.getTelephone());
-        partiesPrenantesAuProces.setIdentifiantLegal(partiesPrenantesAuProces.getIdentifiantLegal());
-        partiesPrenantesAuProces.setEmail(partiesPrenantesAuProces.getEmail());
+        partiesPrenantesAuProces.setAdresse(dto.getAdresse());
+        partiesPrenantesAuProces.setNom(dto.getNom());
+        partiesPrenantesAuProces.setTelephone(dto.getTelephone());
+        partiesPrenantesAuProces.setIdentifiantLegal(dto.getIdentifiantLegal());
+        partiesPrenantesAuProces.setEmail(dto.getEmail());
+
+        partiesPrenantesAuProcesRepository.save(partiesPrenantesAuProces);
 
         return partiesPrenantesAuProces;
     }
 
-    public PartiesPrenantes mapFromEntityToDtoForPlainteDetails(PartiesPrenantesAuProces partiesPrenantesAuProcess) {
+    public PartiesPrenantes mapFromEntityToDtoForPlainteDetails(PartiesPrenantesAuProces entity) {
         return PartiesPrenantes.builder()
-                .nom(partiesPrenantesAuProcess.getNom())
-                .adresse(partiesPrenantesAuProcess.getAdresse())
-                .email(partiesPrenantesAuProcess.getEmail())
-                .identifiantLegal(partiesPrenantesAuProcess.getIdentifiantLegal())
-                .telephone(partiesPrenantesAuProcess.getTelephone())
+                .nom(entity.getNom())
+                .adresse(entity.getAdresse())
+                .email(entity.getEmail())
+                .identifiantLegal(entity.getIdentifiantLegal())
+                .telephone(entity.getTelephone())
                 .build();
     }
 

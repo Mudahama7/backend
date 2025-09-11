@@ -29,7 +29,7 @@ public class UtilisateurMapper {
                 .email(utilisateur.getEmail())
                 .nomComplet(utilisateur.getNomComplet())
                 .telephone(utilisateur.getTelephone())
-                .role(String.valueOf(utilisateur.getRole()).toLowerCase())
+                .role(String.valueOf(utilisateur.getRole()).toUpperCase())
                 .build();
     }
 
