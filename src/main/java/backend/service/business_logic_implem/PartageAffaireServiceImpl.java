@@ -1,5 +1,7 @@
 package backend.service.business_logic_implem;
 
+import backend.dto.AffaireDetails;
+import backend.dto.SharedAffairesDansNotifications;
 import backend.dto.newEntityRequest.NewSharingAffaireRequest;
 import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
@@ -8,6 +10,7 @@ import backend.repository.HistoriquePartageDuDossierRepository;
 import backend.service.business_logic.PartageAffaireService;
 import backend.service.business_logic.UtilisateurService;
 import backend.service.mapper.PartageDossierMapper;
+import backend.service.mapper.PlainteMapper;
 import backend.service.utils.ConnectedUserGetter;
 import backend.service.utils.EmailService;
 import jakarta.mail.MessagingException;
@@ -15,6 +18,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.List;
 
 @AllArgsConstructor
@@ -26,6 +30,7 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
     private final UtilisateurService utilisateurService;
     private final EmailService emailService;
     private final ConnectedUserGetter connectedUserGetter;
+    private final PlainteMapper plainteMapper;
 
     @Override
     public boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws IOException, MessagingException {
@@ -51,6 +56,20 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
     @Override
     public List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom) {
         return historiquePartageDuDossierRepository.findAllByNomDestinataire(nom);
+    }
+
+    @Override
+    public List<SharedAffairesDansNotifications> findAllMyUnreadSharedAffairs() {
+        Utilisateur user = connectedUserGetter.getConnectedUser();
+        return historiquePartageDuDossierRepository.findAllUnreadSharedAffair(null, user.getNomComplet()).stream().map(partageDossierMapper::mapFromHistoryToNotification).toList();
+    }
+
+    @Override
+    public AffaireDetails viewSharedAffair(String idAffair) {
+        HistoriquePartageDuDossier story = historiquePartageDuDossierRepository.findById(Integer.parseInt(idAffair));
+        story.setDateLectureDossierPartage(LocalDate.now());
+
+        return plainteMapper.mapFromPlainteEntityToPlainteDetails(story.getAffaireShared());
     }
 
 }

@@ -22,7 +22,7 @@ public class HistoriquePartageDuDossier {
     private String resumeDossierPartage;
 
     private LocalDate datePartageDossier =  LocalDate.now();
-    private LocalDate dateLectureDossierPartage;
+    private LocalDate dateLectureDossierPartage = null;
 
     private String lienFichierSigne;
 

@@ -1,5 +1,7 @@
 package backend.service.business_logic;
 
+import backend.dto.AffaireDetails;
+import backend.dto.SharedAffairesDansNotifications;
 import backend.dto.newEntityRequest.NewSharingAffaireRequest;
 import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
@@ -14,5 +16,9 @@ public interface PartageAffaireService {
     boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws IOException, MessagingException;
 
     List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom);
+
+    List<SharedAffairesDansNotifications> findAllMyUnreadSharedAffairs();
+
+    AffaireDetails viewSharedAffair(String idAffair);
 
 }

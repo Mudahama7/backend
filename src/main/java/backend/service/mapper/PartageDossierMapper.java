@@ -1,13 +1,11 @@
 package backend.service.mapper;
 
-import backend.dto.AffaireDtoPourList;
+import backend.dto.SharedAffairesDansNotifications;
 import backend.dto.newEntityRequest.NewSharingAffaireRequest;
 import backend.dto.subObjects.HistoriquePartageDossierDto;
 import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
-import backend.service.business_logic.PartageAffaireService;
-import backend.service.business_logic.PlainteService;
 import backend.service.utils.FileGenerator;
 import backend.service.utils.SupabaseStorageService;
 import lombok.AllArgsConstructor;
@@ -17,7 +15,6 @@ import org.thymeleaf.context.Context;
 
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.List;
 
 @AllArgsConstructor
 @Service
@@ -86,5 +83,12 @@ public class PartageDossierMapper {
                 .build();
     }
 
+    public SharedAffairesDansNotifications mapFromHistoryToNotification(HistoriquePartageDuDossier story){
+        return SharedAffairesDansNotifications.builder()
+                .idAffair(String.valueOf(story.getAffaireShared().getIdDossier()))
+                .nomAffair(story.getAffaireShared().getPlaignant().getNom()+" Vs "+story.getAffaireShared().getDefendeur().getNom())
+                .datePartage(story.getDatePartageDossier().toString())
+                .build();
+    }
 
 }
