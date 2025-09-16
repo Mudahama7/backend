@@ -3,6 +3,7 @@ package backend.config;
 import backend.model.auth.ConnectedUser;
 import backend.service.utils.CustomUserDetails;
 import backend.service.utils.JwtUtil;
+import backend.service.utils.UserActionLogService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -24,14 +25,17 @@ public class RequestFilterConfig extends OncePerRequestFilter {
 
     private JwtUtil jwtUtil;
     private CustomUserDetails customUserDetails;
+    private UserActionLogService logService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, @NotNull HttpServletResponse response, @NotNull FilterChain filterChain)
+    protected void doFilterInternal(HttpServletRequest request,
+                                    @NotNull HttpServletResponse response,
+                                    @NotNull FilterChain filterChain)
             throws ServletException, IOException {
 
         String requestPath = request.getServletPath();
 
-        if (requestPath.startsWith("api/authentication")) {
+        if (requestPath.startsWith("/api/authentication")) {
             filterChain.doFilter(request, response);
             return;
         }
@@ -46,20 +50,25 @@ public class RequestFilterConfig extends OncePerRequestFilter {
         }
 
         if (StringUtils.hasLength(username) && SecurityContextHolder.getContext().getAuthentication() == null) {
-
             ConnectedUser userDetails = (ConnectedUser) customUserDetails.loadUserByUsername(username);
 
             if (jwtUtil.validateToken(jwt, userDetails)) {
-                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken = new UsernamePasswordAuthenticationToken(
-                        userDetails, null, userDetails.getAuthorities());
+                UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                        new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
                 usernamePasswordAuthenticationToken.setDetails(
                         new WebAuthenticationDetailsSource().buildDetails(request));
                 SecurityContextHolder.getContext().setAuthentication(usernamePasswordAuthenticationToken);
             }
-
         }
+
+        logService.logAction(
+                username,
+                request.getMethod(),
+                request.getRequestURI(),
+                request.getRemoteAddr(),
+                request.getQueryString()
+        );
+
         filterChain.doFilter(request, response);
-
     }
-
 }

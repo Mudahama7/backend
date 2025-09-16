@@ -35,7 +35,7 @@ public class NotificationsController {
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("get_amount/")
-    private ResponseEntity<Integer> getAmount(@RequestParam Integer idAffair)
+    private ResponseEntity<Integer> getAmount()
     {
         return ResponseEntity.ok(partageAffaireService.findAllMyUnreadSharedAffairs().size());
     }
