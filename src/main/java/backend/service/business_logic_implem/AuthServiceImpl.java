@@ -7,13 +7,14 @@ import backend.model.Utilisateur;
 import backend.model.auth.ConnectedUser;
 import backend.service.business_logic.AuthService;
 import backend.service.business_logic.UtilisateurService;
-import backend.service.utils.CustomUserDetails;
+import backend.service.mapper.AuthMapper;
 import backend.service.utils.EmailService;
 import backend.service.utils.JwtUtil;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -24,27 +25,25 @@ public class AuthServiceImpl implements AuthService {
     private final UtilisateurService utilisateurService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
-    private final AuthenticationManager authenticationManager;
-    private final CustomUserDetails customUserDetails;
     private final JwtUtil jwtUtil;
+    private final AuthMapper authMapper;
+    private final AuthenticationManager authenticationManager;
 
     @Override
     public LoginResponse login(LoginRequest loginRequest) {
 
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getMotDePasse()));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getMotDePasse())
+        );
+        ConnectedUser connectedUser = (ConnectedUser) authentication.getPrincipal();
 
-        ConnectedUser connectedUser = (ConnectedUser) customUserDetails.loadUserByUsername(loginRequest.getEmail());
+        System.out.println(connectedUser.getPassword());
+        System.out.println(connectedUser.getEmailAsUsername());
+
         Utilisateur user = utilisateurService.getUtilisateurByEmail(loginRequest.getEmail());
 
-        return LoginResponse.builder()
-                .nomComplet(user.getNomComplet())
-                .email(user.getEmail())
-                .telephone(user.getTelephone())
-                .role(user.getRole().toString())
-                .photoProfil(user.getPhotoProfilUrl())
-                .token(jwtUtil.generateToken(connectedUser))
-                .build();
+        return authMapper.mapToLoginResponse(user, jwtUtil.generateToken(connectedUser));
+
     }
 
     @Override
@@ -64,4 +63,5 @@ public class AuthServiceImpl implements AuthService {
             return false;
         }
     }
+
 }

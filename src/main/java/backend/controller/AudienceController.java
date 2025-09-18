@@ -1,6 +1,7 @@
 package backend.controller;
 
 import backend.dto.newEntityRequest.NewAudience;
+import backend.exception.type_exception.SignatureMissMatchException;
 import backend.model.Plainte;
 import backend.service.business_logic.AudienceService;
 import backend.service.business_logic.PlainteService;
@@ -42,8 +43,9 @@ public class AudienceController {
                     .contentLength(pdfBytes.length)
                     .body(new ByteArrayResource(pdfBytes));
         } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body("Impossible de fixer une audience : signatures manquantes.");
+
+            throw new SignatureMissMatchException("Impossible de fixer une audience : signatures manquantes.");
+
         }
     }
 

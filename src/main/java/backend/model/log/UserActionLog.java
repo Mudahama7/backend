@@ -18,6 +18,6 @@ public class UserActionLog {
     private String endpoint;
     private String ipAddress;
     private String parameters;
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 
 }

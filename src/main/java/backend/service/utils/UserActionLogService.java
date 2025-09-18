@@ -3,7 +3,6 @@ import backend.model.log.UserActionLog;
 import backend.repository.UserActionLogRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import java.time.LocalDateTime;
 
 @AllArgsConstructor
 @Service
@@ -17,7 +16,6 @@ public class UserActionLogService {
         log.setEndpoint(endpoint);
         log.setIpAddress(ip);
         log.setParameters(params);
-        log.setTimestamp(LocalDateTime.now());
 
         repository.save(log);
     }

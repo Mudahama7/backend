@@ -16,7 +16,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -63,9 +62,13 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     public boolean supprimer_user(String idUser) {
 
         int id = Integer.parseInt(idUser);
-        utilisateurRepository.deleteById(id);
 
-        return true;
+        if (utilisateurRepository.findById(id).isPresent()) {
+            utilisateurRepository.deleteById(id);
+            return true;
+        }
+
+        return false;
     }
 
     @Override
