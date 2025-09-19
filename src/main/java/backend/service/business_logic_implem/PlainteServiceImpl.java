@@ -5,6 +5,7 @@ import backend.dto.AffaireDtoPourList;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
+import backend.model.enums.Role;
 import backend.model.enums.StatutDossier;
 import backend.repository.PlainteRepository;
 import backend.service.business_logic.PartageAffaireService;
@@ -70,7 +71,15 @@ public class PlainteServiceImpl implements PlainteService {
     @Transactional(readOnly = true)
     @Override
     public List<AffaireDtoPourList> findAll() {
-        return plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUserGetter.getConnectedUser()).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+        Utilisateur connectedUser = connectedUserGetter.getConnectedUser();
+        if (connectedUser.getRole() == Role.SECRETAIRE){
+            return plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUserGetter.getConnectedUser()).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+        }else if(connectedUser.getRole() == Role.ADMINISTRATOR) {
+            return plainteRepository.findAll().stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+        }
+        else {
+            return findDossiersQuiMeSontPartages();
+        }
     }
 
     @Transactional(readOnly = true)
@@ -112,13 +121,18 @@ public class PlainteServiceImpl implements PlainteService {
         Utilisateur user = connectedUserGetter.getConnectedUser();
         Map<String, Object> plainteDeposeesChezMoi = new HashMap<>();
 
-        plainteDeposeesChezMoi.put("tous", plainteRepository.findTousLesDossiersDeposeChezMoi(user).size());
-        plainteDeposeesChezMoi.put("depose", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Depose, user).size());
-        plainteDeposeesChezMoi.put("verifie", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Verifie, user).size());
-        plainteDeposeesChezMoi.put("transmis", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Transmis, user).size());
-        plainteDeposeesChezMoi.put("encours", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, user).size());
-        plainteDeposeesChezMoi.put("juge", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, user).size());
-        plainteDeposeesChezMoi.put("archive", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Archive, user).size());
+        if (user.getRole() == Role.SECRETAIRE){
+
+            plainteDeposeesChezMoi.put("tous", plainteRepository.findTousLesDossiersDeposeChezMoi(user).size());
+            plainteDeposeesChezMoi.put("depose", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Depose, user).size());
+            plainteDeposeesChezMoi.put("verifie", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Verifie, user).size());
+            plainteDeposeesChezMoi.put("transmis", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Transmis, user).size());
+            plainteDeposeesChezMoi.put("encours", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, user).size());
+            plainteDeposeesChezMoi.put("juge", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, user).size());
+            plainteDeposeesChezMoi.put("archive", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Archive, user).size());
+
+        }
+
 
         return plainteDeposeesChezMoi;
     }

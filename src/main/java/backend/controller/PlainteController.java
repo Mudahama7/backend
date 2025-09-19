@@ -30,24 +30,16 @@ public class PlainteController {
     }
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
-    @GetMapping("find_affaires_secretaire/")
+    @GetMapping("find_all/")
     public ResponseEntity<List<AffaireDtoPourList>> findAffairesSecretaires(){
         return ResponseEntity.ok(plainteService.findAll());
     }
 
-
     @PreAuthorize("hasAuthority('consulter_affaire')")
-    @GetMapping("find_affaires_secretaire_amount/")
+    @GetMapping("find_all_amount/")
     public ResponseEntity<Map<String, Object>> findAffairesSecretairesAmount(){
         return ResponseEntity.ok(plainteService.findAll_Amount());
     }
-
-    @PreAuthorize("hasAuthority('consulter_affaire')")
-    @GetMapping("find_affaires_qui_me_sont_partages/")
-    public ResponseEntity<List<AffaireDtoPourList>> findAffairesQuiMeSontPartages(){
-        return ResponseEntity.ok(plainteService.findDossiersQuiMeSontPartages());
-    }
-
 
     @PreAuthorize("hasAuthority('approuver_affaire')")
     @PutMapping("validation_greffier/{idDossier}/")
