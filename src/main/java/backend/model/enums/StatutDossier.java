@@ -7,6 +7,7 @@ public enum StatutDossier {
 
     Depose,
     Verifie,
+    EnAttente,
     Transmis,
     EnCours,
     Juge,

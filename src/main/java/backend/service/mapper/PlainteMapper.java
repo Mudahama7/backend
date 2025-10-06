@@ -6,13 +6,8 @@ import backend.dto.newEntityRequest.NewAffaire;
 import backend.dto.subObjects.*;
 import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
-import backend.service.business_logic.AudienceService;
-import backend.service.business_logic.PartageAffaireService;
-import backend.service.business_logic.PieceJointeService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @AllArgsConstructor
 @Service

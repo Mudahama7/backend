@@ -23,5 +23,8 @@ public interface PlainteRepository extends JpaRepository<Plainte, Integer> {
             @Param("user") Utilisateur user
     );
 
+    List<Plainte> findTop10ByDeposeChezOrderByDateDepotPlainteDesc(Utilisateur deposeChez);
+
+    List<Plainte> findTop10ByOrderByDateDepotPlainteDesc();
 
 }

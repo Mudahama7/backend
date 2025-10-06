@@ -1,11 +1,13 @@
 package backend.service.business_logic_implem;
 
 import backend.dto.AffaireDetails;
+import backend.dto.DashboardNeeds;
 import backend.dto.SharedAffairesDansNotifications;
 import backend.dto.newEntityRequest.NewSharingAffaireRequest;
 import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
+import backend.model.enums.StatutDossier;
 import backend.repository.HistoriquePartageDuDossierRepository;
 import backend.service.business_logic.PartageAffaireService;
 import backend.service.business_logic.UtilisateurService;
@@ -41,10 +43,15 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
         historiquePartageDuDossierRepository.save(newShare);
 
         String msgText = String.format(
-                "Bonjour %s,\n\n" +
-                        "Vous avez reçu un nouveau partage de dossier de la part de %s.\n" +
-                        "Merci de consulter le dossier via votre espace de travail.\n\n" +
-                        "Cordialement,\nL'équipe.",
+                """
+                        Bonjour %s,
+                        
+                        Vous avez reçu un nouveau partage de dossier de la part de %s.
+                        Merci de consulter le dossier via votre espace de travail.
+                        
+                        Cordialement,
+                        L'équipe.""",
+                newSharingAffaireRequest.getNomDestinataire(),
                 connectedUserGetter.getConnectedUser().getNomComplet()
         );
 
@@ -70,6 +77,27 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
         story.setDateLectureDossierPartage(LocalDate.now());
 
         return plainteMapper.mapFromPlainteEntityToPlainteDetails(story.getAffaireShared());
+    }
+
+    @Override
+    public DashboardNeeds provideDashboardNeeds() {
+
+        Utilisateur connectedUser = connectedUserGetter.getConnectedUser();
+
+        DashboardNeeds dashboardNeeds = new DashboardNeeds();
+
+        dashboardNeeds.setTotalDossier(historiquePartageDuDossierRepository.findAllByNomDestinataire(connectedUser.getNomComplet()).size());
+        dashboardNeeds.setEnCours(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.EnCours, connectedUser.getNomComplet()).size());
+        dashboardNeeds.setEnAttente(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.EnAttente, connectedUser.getNomComplet()).size());
+        dashboardNeeds.setJuger(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.Juge, connectedUser.getNomComplet()).size());
+        dashboardNeeds.setTopDixDerniersDossiers(
+                historiquePartageDuDossierRepository
+                        .findTo10ByNomDestinataireOrderByDatePartageDossierDesc(connectedUser.getNomComplet())
+                        .stream()
+                        .map(plainteMapper::mapFromHistoriqueDePartage)
+                        .toList());
+
+        return dashboardNeeds;
     }
 
 }

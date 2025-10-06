@@ -25,7 +25,6 @@ public class PlainteController {
     @PreAuthorize("hasAuthority('create_affaire')")
     @PostMapping("nouvelle_affaire/")
     public ResponseEntity<Boolean> createPlainte(@RequestBody NewAffaire newAffaire) throws MessagingException {
-        System.out.println("Authorities : "+connectedUserGetter.getConnectedUser().getRole().getGrantedAuthorities());
         return ResponseEntity.ok(plainteService.createAffaire(newAffaire));
     }
 
@@ -33,12 +32,6 @@ public class PlainteController {
     @GetMapping("find_all/")
     public ResponseEntity<List<AffaireDtoPourList>> findAffairesSecretaires(){
         return ResponseEntity.ok(plainteService.findAll());
-    }
-
-    @PreAuthorize("hasAuthority('consulter_affaire')")
-    @GetMapping("find_all_amount/")
-    public ResponseEntity<Map<String, Object>> findAffairesSecretairesAmount(){
-        return ResponseEntity.ok(plainteService.findAll_Amount());
     }
 
     @PreAuthorize("hasAuthority('approuver_affaire')")

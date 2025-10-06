@@ -35,7 +35,7 @@ public class PartageDossierController {
         Utilisateur user = connectedUserGetter.getConnectedUser();
         Plainte concernedAffair = plainteService.findById(newSharingAffaireRequest.getIdDossier());
 
-        if (user.getSignatureUrlImage() != null) {
+        if (true) {
             return ResponseEntity.ok(partageAffaireService.shareAffaire(newSharingAffaireRequest, user, concernedAffair));
         } else {
             throw new SignatureMissMatchException("Impossible de partager le dossier : On a besoin de votre signature pour signer la note de partage ! et vous ne l'avez pas encore chargée...");

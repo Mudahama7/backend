@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@AllArgsConstructor
 @RestController
 @RequestMapping("api/notifications/")
+@AllArgsConstructor
 public class NotificationsController {
 
 

@@ -4,31 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Ordonnance de fixation de date d'audience</title>
+
     <style>
-        :root {
-            --page-w: 210mm;
-            --page-h: 297mm;
-            --margin: 18mm;
-            --text: #111;
-            --muted: #555;
-            --accent: #000;
-        }
         * { box-sizing: border-box; }
         html, body { height: 100%; }
         body {
             background: #f1f3f5;
-            margin: 0; color: var(--text);
+            margin: 0;
+            color: #111;
             font-family: "Times New Roman", Times, serif;
         }
         .page {
-            width: var(--page-w);
+            width: 210mm;
             height: 297mm;
             margin: 24px auto;
-            padding: var(--margin);
+            padding: 18mm;
             background: white;
-            box-shadow: 0 10px 30px rgba(0,0,0,.08);
+            border: 1px solid #ccc; /* à la place de box-shadow */
             position: relative;
-
         }
         @page {
             size: A4 portrait;
@@ -37,57 +30,76 @@
         .center { text-align: center; }
         .uppercase { text-transform: uppercase; }
         .smallcaps { font-variant: small-caps; }
-        .muted { color: var(--muted); }
+        .muted { color: #555; }
         .header { line-height: 1.25; }
+
         .emblem {
-            width: 90px; height: 90px; margin: 6px auto 10px;
-            display: flex; align-items: center; justify-content: center;
+            width: 90px;
+            height: 90px;
+            margin: 6px auto 10px;
+            display: table;
+            text-align: center;
         }
-        .emblem img { width: 100%; }
+        .emblem img {
+            display: block;
+            margin: auto;
+            width: 100%;
+        }
+
         h1.title {
-            font-size: 18pt; text-align: center; margin: 14px 0 20px;
-            text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px;
+            font-size: 18pt;
+            text-align: center;
+            margin: 14px 0 20px;
+            text-decoration: underline;
         }
+
         p { font-size: 12pt; line-height: 1.6; text-align: justify; }
 
         .sign-row {
-            display: flex;
-            justify-content: space-between;
+            display: table;
+            width: 100%;
             margin-top: 60px;
-            page-break-inside: avoid; /* éviter de couper sur 2 pages */
         }
 
         .sign {
-            width: 40%; /* deux colonnes */
+            display: table-cell;
+            width: 50%; /* deux colonnes */
             text-align: center;
+            vertical-align: top;
         }
 
         .signature-box {
             height: 50mm;
             margin: 10px auto;
             border: 1px dashed #bbb;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 80%;
+            display: table;
+            text-align: center;
             color: #888;
             font-size: 11pt;
         }
+
         .signature-box img{
             width: 100%;
             height: 100%;
         }
 
-
         .sign .label { font-weight: 600; margin-bottom: 8px; }
 
-        .meta { position: absolute; right: var(--margin); top: var(--margin); font-size: 10pt; color: var(--muted); }
+        .meta {
+            position: absolute;
+            right: 18mm;
+            top: 18mm;
+            font-size: 10pt;
+            color: #555;
+        }
 
         @media print {
             body { background: white; }
-            .page { box-shadow: none; margin: 0; }
+            .page { border: none; margin: 0; }
         }
     </style>
+
 </head>
 <body>
 <main class="page">

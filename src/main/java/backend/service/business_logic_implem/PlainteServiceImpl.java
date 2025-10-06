@@ -2,6 +2,7 @@ package backend.service.business_logic_implem;
 
 import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
+import backend.dto.DashboardNeeds;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
@@ -10,7 +11,6 @@ import backend.model.enums.StatutDossier;
 import backend.repository.PlainteRepository;
 import backend.service.business_logic.PartageAffaireService;
 import backend.service.business_logic.PlainteService;
-import backend.service.mapper.PartageDossierMapper;
 import backend.service.mapper.PlainteMapper;
 import backend.service.utils.ConnectedUserGetter;
 import backend.service.utils.EmailService;
@@ -19,9 +19,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @Service
@@ -91,11 +89,6 @@ public class PlainteServiceImpl implements PlainteService {
     }
 
     @Override
-    public List<AffaireDtoPourList> filterAllAffairsPerStatus(String status) {
-        return plainteRepository.findAllByStatut(StatutDossier.valueOf(status)).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
-    }
-
-    @Override
     public AffaireDetails findAllAffairDetails(String id) {
         return plainteMapper.mapFromPlainteEntityToPlainteDetails(findById(id));
     }
@@ -117,24 +110,41 @@ public class PlainteServiceImpl implements PlainteService {
     }
 
     @Override
-    public Map<String, Object> findAll_Amount() {
-        Utilisateur user = connectedUserGetter.getConnectedUser();
-        Map<String, Object> plainteDeposeesChezMoi = new HashMap<>();
+    public DashboardNeeds provideDashboardNeeds() {
+        Utilisateur connectedUser = connectedUserGetter.getConnectedUser();
+        DashboardNeeds dashboardNeeds = new DashboardNeeds();
 
-        if (user.getRole() == Role.SECRETAIRE){
+        if (connectedUser.getRole() == Role.SECRETAIRE) {
 
-            plainteDeposeesChezMoi.put("tous", plainteRepository.findTousLesDossiersDeposeChezMoi(user).size());
-            plainteDeposeesChezMoi.put("depose", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Depose, user).size());
-            plainteDeposeesChezMoi.put("verifie", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Verifie, user).size());
-            plainteDeposeesChezMoi.put("transmis", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Transmis, user).size());
-            plainteDeposeesChezMoi.put("encours", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, user).size());
-            plainteDeposeesChezMoi.put("juge", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, user).size());
-            plainteDeposeesChezMoi.put("archive", plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Archive, user).size());
+            dashboardNeeds.setTotalDossier(plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUser).size());
+            dashboardNeeds.setEnCours(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, connectedUser).size());
+            dashboardNeeds.setEnAttente(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnAttente, connectedUser).size());
+            dashboardNeeds.setJuger(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, connectedUser).size());
+            dashboardNeeds.setTopDixDerniersDossiers(
+                    plainteRepository
+                            .findTop10ByDeposeChezOrderByDateDepotPlainteDesc(connectedUser)
+                            .stream()
+                            .map(plainteMapper::mapFromEntityToAffaireDtoList)
+                            .toList());
+
+        } else if (connectedUser.getRole() == Role.ADMINISTRATOR) {
+
+            dashboardNeeds.setTotalDossier(plainteRepository.findAll().size());
+            dashboardNeeds.setEnCours(plainteRepository.findAllByStatut(StatutDossier.EnCours).size());
+            dashboardNeeds.setEnAttente(plainteRepository.findAllByStatut(StatutDossier.EnAttente).size());
+            dashboardNeeds.setJuger(plainteRepository.findAllByStatut(StatutDossier.Juge).size());
+            dashboardNeeds.setTopDixDerniersDossiers(
+                    plainteRepository
+                            .findTop10ByOrderByDateDepotPlainteDesc()
+                            .stream()
+                            .map(plainteMapper::mapFromEntityToAffaireDtoList)
+                            .toList());
 
         }
-
-
-        return plainteDeposeesChezMoi;
+        else {
+            dashboardNeeds = partageAffaireService.provideDashboardNeeds();
+        }
+        return dashboardNeeds;
     }
 
 }

@@ -1,6 +1,7 @@
 package backend.service.business_logic;
 
 import backend.dto.AffaireDetails;
+import backend.dto.DashboardNeeds;
 import backend.dto.SharedAffairesDansNotifications;
 import backend.dto.newEntityRequest.NewSharingAffaireRequest;
 import backend.model.HistoriquePartageDuDossier;
@@ -21,4 +22,5 @@ public interface PartageAffaireService {
 
     AffaireDetails viewSharedAffair(String idAffair);
 
+    DashboardNeeds provideDashboardNeeds();
 }
