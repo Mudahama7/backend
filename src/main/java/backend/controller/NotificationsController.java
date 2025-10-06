@@ -21,21 +21,21 @@ public class NotificationsController {
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("get_all/")
-    private ResponseEntity<List<SharedAffairesDansNotifications>> getAllNotifications()
+    public ResponseEntity<List<SharedAffairesDansNotifications>> getAllNotifications()
     {
         return ResponseEntity.ok(partageAffaireService.findAllMyUnreadSharedAffairs());
     }
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("view_details/{idAffair}/")
-    private ResponseEntity<AffaireDetails>  getAffaireDetails(@PathVariable String idAffair)
+    public ResponseEntity<AffaireDetails>  getAffaireDetails(@PathVariable String idAffair)
     {
         return ResponseEntity.ok(partageAffaireService.viewSharedAffair(idAffair));
     }
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("get_amount/")
-    private ResponseEntity<Integer> getAmount()
+    public ResponseEntity<Integer> getAmount()
     {
         return ResponseEntity.ok(partageAffaireService.findAllMyUnreadSharedAffairs().size());
     }
