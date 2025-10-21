@@ -27,5 +27,6 @@ public class Audience {
     private String heureAudience;
     private String causeInscrit;
     private String urlFile;
+    private boolean signedByThePresident = false;
 
 }

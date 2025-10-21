@@ -31,7 +31,7 @@ public class JugementController {
             @RequestParam("statutJugement") String statutJugement,
             @RequestParam("pieceJointe") MultipartFile pieceJointe,
             @RequestParam("resumeDecision") String resumeDecision
-    ) throws IOException {
+    ) throws Exception {
         NewJugementFinal jugementFinal = NewJugementFinal.builder()
                 .idDossier(idDossier)
                 .montantDommage(montantDommage)

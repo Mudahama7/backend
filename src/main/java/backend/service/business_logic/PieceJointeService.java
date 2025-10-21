@@ -6,6 +6,6 @@ import java.io.IOException;
 
 public interface PieceJointeService {
 
-    boolean joinPieceToAffaire(NewPieceJointe newPieceJointe) throws IOException;
+    boolean joinPieceToAffaire(NewPieceJointe newPieceJointe) throws Exception;
 
 }

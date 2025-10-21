@@ -19,7 +19,7 @@ public class JugementServiceImpl implements JugementService {
     private final JugementMapper jugementMapper;
 
     @Override
-    public boolean prononcerUnJugement(NewJugementFinal newJugementFinal, Plainte concernedAffair) throws IOException {
+    public boolean prononcerUnJugement(NewJugementFinal newJugementFinal, Plainte concernedAffair) throws Exception {
         JugementFinal jugementFinal = jugementMapper.mapFromNewJugementFinalReqToJugementFinal(newJugementFinal, concernedAffair);
         jugementFinalRepository.save(jugementFinal);
         return true;

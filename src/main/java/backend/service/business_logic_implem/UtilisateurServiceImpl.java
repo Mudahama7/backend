@@ -4,16 +4,21 @@ import backend.dto.UserDtoPourList;
 import backend.dto.UserSignatures;
 import backend.dto.newEntityRequest.NewUtilisateur;
 import backend.dto.updateEntityRequest.UpdateAccountUser;
+import backend.dto.updateEntityRequest.UpdateUserPassword;
 import backend.model.Utilisateur;
 import backend.model.enums.Role;
 import backend.repository.UtilisateurRepository;
 import backend.service.business_logic.UtilisateurService;
 import backend.service.mapper.UtilisateurMapper;
+import backend.service.utils.ConnectedUserGetter;
 import backend.service.utils.EmailService;
+import backend.service.utils.MinioService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Optional;
@@ -26,6 +31,7 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     private final UtilisateurMapper utilisateurMapper;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final MinioService minioServce;
 
     @Override
     public Utilisateur getUtilisateurByEmail(String email) {
@@ -79,15 +85,6 @@ public class UtilisateurServiceImpl implements UtilisateurService {
                 .toList();
     }
 
-    //TODO : implement this method
-
-    @Override
-    public boolean update_account(UpdateAccountUser updateAccountUser) {
-
-
-        return true;
-    }
-
     @Override
     public String generatePassword() {
         String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -113,6 +110,59 @@ public class UtilisateurServiceImpl implements UtilisateurService {
     @Override
     public boolean verifyIfUserAlreadyExists(String email) {
         return getUtilisateurByEmail(email) != null;
+    }
+
+    @Override
+    public boolean AddSignature(MultipartFile signature) throws Exception {
+
+        String storedSignatureUrl = minioServce.uploadFile(signature);
+        Utilisateur connectedUser = getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+        connectedUser.setSignatureUrlImage(storedSignatureUrl);
+        utilisateurRepository.save(connectedUser);
+
+        return true;
+    }
+
+    @Override
+    public Boolean updatePassword(UpdateUserPassword data) {
+
+        Utilisateur connectedUser = getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        boolean isThisCurrentPasswordCorrect = passwordEncoder.matches(data.getAncienMotDePasse(), connectedUser.getMotDePasse());
+
+        if (isThisCurrentPasswordCorrect && data.getNouveauMotDePasse().equals(data.getConfirmerMotDePasse())){
+            connectedUser.setMotDePasse(passwordEncoder.encode(data.getNouveauMotDePasse()));
+            utilisateurRepository.save(connectedUser);
+        }
+
+        return true;
+    }
+
+    @Override
+    public Boolean updateProfilePicture(MultipartFile photoProfile) throws Exception {
+
+        Utilisateur connectedUser = getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        String storedPictureUrl = minioServce.uploadFile(photoProfile);
+        connectedUser.setPhotoProfilUrl(storedPictureUrl);
+        utilisateurRepository.save(connectedUser);
+
+        return true;
+    }
+
+    @Override
+    public Boolean updateUserInfo(UpdateAccountUser data) {
+
+        Utilisateur connectedUser = getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
+        connectedUser.setRole(Role.valueOf(data.getRole()));
+        connectedUser.setEmail(data.getEmail());
+        connectedUser.setNomComplet(data.getNomComplet());
+        connectedUser.setTelephone(data.getPhone());
+
+        utilisateurRepository.save(connectedUser);
+
+        return true;
     }
 
 }

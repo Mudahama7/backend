@@ -23,6 +23,7 @@ public enum Role {
                     CONSULTER_DOCUMENT,
                     MODIFIER_PROFIL,
                     CONSULTER_AFFAIRE,
+                    CONSULTER_UTILISATEURS,
                     PARTAGER_UNE_AFFAIRE
             )
     ),
@@ -33,7 +34,8 @@ public enum Role {
                     ACQUISITION_DOCUMENT,
                     MODIFIER_DOCUMENT,
                     SECURISER_DOCUMENT,
-                    SUPPRIMER_DOCUMENT
+                    SUPPRIMER_DOCUMENT,
+                    MODIFIER_AFFAIRE
             )
     ),
 
@@ -44,7 +46,8 @@ public enum Role {
                     VALIDER_DOCUMENT,
                     SECURISER_DOCUMENT,
                     SUPPRIMER_DOCUMENT,
-                    PRONONCER_SON_JUGEMENT
+                    PRONONCER_SON_JUGEMENT,
+                    SIGNER_ORDONNANCEMENT
             )
     ),
 
@@ -58,7 +61,8 @@ public enum Role {
             Sets.newHashSet(
                     VALIDER_DOCUMENT,
                     SECURISER_DOCUMENT,
-                    SUPPRIMER_DOCUMENT
+                    SUPPRIMER_DOCUMENT,
+                    FIXER_DATE_POUR_UNE_AFFAIRE
             )
     ),
 
@@ -70,7 +74,9 @@ public enum Role {
                     GERER_COMPTE_UTILISATEUR,
                     CONFIGURATION_SYSTEM,
                     CREER_ORDONNANCEMENT,
-
+                    ACQUISITION_DOCUMENT,
+                    MODIFIER_AFFAIRE,
+                    FIXER_DATE_POUR_UNE_AFFAIRE,
                     PRONONCER_SON_JUGEMENT,
                     CREATE_AFFAIRE
             )

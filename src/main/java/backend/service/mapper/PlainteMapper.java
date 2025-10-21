@@ -5,9 +5,11 @@ import backend.dto.AffaireDtoPourList;
 import backend.dto.newEntityRequest.NewAffaire;
 import backend.dto.subObjects.*;
 import backend.model.HistoriquePartageDuDossier;
+import backend.model.PartiesPrenantesAuProces;
 import backend.model.Plainte;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import backend.dto.updateEntityRequest.UpdateAffaire;
 
 @AllArgsConstructor
 @Service
@@ -59,10 +61,36 @@ public class PlainteMapper {
                                 .status(plainte.getStatutDossier().toString())
                                 .build())
                 .historiquePartageDossierDtos(plainte.getHistoriquePartageDuDossiers().stream().map(partageDossierMapper::mapFromEntityToDto).toList())
-                .listDAudiences(plainte.getListeDAudiences().stream().map(audienceMapper::mapFromEntityToAudiencePourAffaireDetails).toList())
-                .listPiecesJointes(plainte.getPieceJointeAuDossiers().stream().map(pieceJointeMapper::mapFromEntityToDto).toList())
-                .listJugements(plainte.getJugementFinal().stream().map(jugementMapper::mapFromEntityToPlainteInformations).toList())
+                .AudiencePourAffaireDetails(plainte.getListeDAudiences().stream().map(audienceMapper::mapFromEntityToAudiencePourAffaireDetails).toList())
+                .PieceJointePourAffaireDetails(plainte.getPieceJointeAuDossiers().stream().map(pieceJointeMapper::mapFromEntityToDto).toList())
+                .JugementsInformations(plainte.getJugementFinal().stream().map(jugementMapper::mapFromEntityToPlainteInformations).toList())
                 .build();
+    }
+
+    public Plainte updateInformations(UpdateAffaire updateAffaire, Plainte affaireToUpdate){
+
+        PartiesPrenantesAuProces infoPlaingant = affaireToUpdate.getPlaignant();
+        infoPlaingant.setNom(updateAffaire.getNomCompletPlaignant());
+        infoPlaingant.setAdresse(updateAffaire.getAdressePlaignant());
+        infoPlaingant.setTelephone(updateAffaire.getTelephonePlaignant());
+        infoPlaingant.setEmail(updateAffaire.getEmailPlaignant());
+        infoPlaingant.setIdentifiantLegal(updateAffaire.getIdentifiantLegalPlaignant());
+
+        PartiesPrenantesAuProces infoDefendeur = affaireToUpdate.getDefendeur();
+        infoDefendeur.setNom(updateAffaire.getNomCompletDefendeur());
+        infoDefendeur.setAdresse(updateAffaire.getAdresseDefendeur());
+        infoDefendeur.setTelephone(updateAffaire.getTelephoneDefendeur());
+        infoDefendeur.setEmail(updateAffaire.getEmailDefendeur());
+        infoDefendeur.setIdentifiantLegal(updateAffaire.getIdentifiantLegalDefendeur());
+
+        affaireToUpdate.setNatureLitige(updateAffaire.getNatureLitige());
+        if (!updateAffaire.getDescriptionFaits().isEmpty()){
+            affaireToUpdate.setDescriptionDesFaits(updateAffaire.getDescriptionFaits());
+        }
+        affaireToUpdate.setPlaignant(infoPlaingant);
+        affaireToUpdate.setDefendeur(infoDefendeur);
+
+        return affaireToUpdate;
     }
 
 }

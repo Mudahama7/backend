@@ -30,12 +30,12 @@ public class PartageDossierController {
 
     @PreAuthorize("hasAuthority('partager_une_affaire')")
     @PostMapping("en_partager_un/")
-    public ResponseEntity<?> partagerUnDossier(@RequestBody NewSharingAffaireRequest  newSharingAffaireRequest) throws IOException, MessagingException {
+    public ResponseEntity<?> partagerUnDossier(@RequestBody NewSharingAffaireRequest  newSharingAffaireRequest) throws Exception {
 
         Utilisateur user = connectedUserGetter.getConnectedUser();
         Plainte concernedAffair = plainteService.findById(newSharingAffaireRequest.getIdDossier());
 
-        if (true) {
+        if (!user.getSignatureUrlImage().isEmpty()) {
             return ResponseEntity.ok(partageAffaireService.shareAffaire(newSharingAffaireRequest, user, concernedAffair));
         } else {
             throw new SignatureMissMatchException("Impossible de partager le dossier : On a besoin de votre signature pour signer la note de partage ! et vous ne l'avez pas encore chargée...");

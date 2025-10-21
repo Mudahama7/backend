@@ -4,7 +4,7 @@ import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
 import backend.dto.DashboardNeeds;
 import backend.dto.newEntityRequest.NewAffaire;
-import backend.dto.subObjects.HistoriquePartageDossierDto;
+import backend.dto.updateEntityRequest.UpdateAffaire;
 import backend.model.Plainte;
 import jakarta.mail.MessagingException;
 
@@ -28,5 +28,7 @@ public interface PlainteService {
     Boolean approbationAffairePresident(String idAffaire);
 
     DashboardNeeds provideDashboardNeeds();
+
+    boolean updateAffaireInfo(UpdateAffaire updateAffaire);
 
 }

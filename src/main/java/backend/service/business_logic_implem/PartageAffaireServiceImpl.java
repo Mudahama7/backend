@@ -35,7 +35,7 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
     private final PlainteMapper plainteMapper;
 
     @Override
-    public boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws IOException, MessagingException {
+    public boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws Exception {
 
         Utilisateur destinataire = utilisateurService.getUserByNom(newSharingAffaireRequest.getNomDestinataire());
 

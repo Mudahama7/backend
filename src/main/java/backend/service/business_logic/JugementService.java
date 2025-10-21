@@ -7,6 +7,6 @@ import java.io.IOException;
 
 public interface JugementService {
 
-    boolean prononcerUnJugement(NewJugementFinal newJugementFinal, Plainte concernedAffair) throws IOException;
+    boolean prononcerUnJugement(NewJugementFinal newJugementFinal, Plainte concernedAffair) throws Exception;
 
 }

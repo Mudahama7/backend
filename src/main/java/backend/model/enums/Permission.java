@@ -11,12 +11,14 @@ public enum Permission {
 
     CREATE_AFFAIRE("create_affaire"),
     CONSULTER_AFFAIRE("consulter_affaire"),
+    MODIFIER_AFFAIRE("modifier_affaire"),
     APPROUVER_AFFAIRE("approuver_affaire"),
     FIXER_DATE_POUR_UNE_AFFAIRE("fixer_date_pour_une_affaire"),
     PRONONCER_SON_JUGEMENT("prononcer_son_jugement"),
     PARTAGER_UNE_AFFAIRE("partager_une_affaire"),
 
     CREER_ORDONNANCEMENT("creer_ordonnancement"),
+    SIGNER_ORDONNANCEMENT("signer_ordonnancement"),
 
     ACQUISITION_DOCUMENT("acquisition_document"),
     MODIFIER_DOCUMENT("modifier_document"),
@@ -30,6 +32,7 @@ public enum Permission {
     CONSULTER_DOCUMENT("consulter_document"),
 
     MODIFIER_PROFIL("modifier_profil"),
+    CONSULTER_UTILISATEURS("consulter_utilisateur"),
     GERER_COMPTE_UTILISATEUR("gerer_compte_utilisateur");
 
     private final String permission;

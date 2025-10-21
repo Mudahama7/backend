@@ -9,10 +9,11 @@ import java.io.IOException;
 
 public interface AudienceService {
 
-    byte[] fixerNewAudience(NewAudience newAudience, Plainte concernedAffaire) throws IOException, MessagingException;
+    byte[] fixerNewAudience(NewAudience newAudience, Plainte concernedAffaire) throws Exception;
 
     void shareAudienceInformationAfterCreated(SharingAudienceInfo sharingAudienceInfo) throws MessagingException;
 
     Boolean verifyIfSignaturesExist();
 
+    Boolean signerOrdonnByPreso(String idAudience) throws Exception;
 }

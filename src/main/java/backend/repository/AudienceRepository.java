@@ -10,4 +10,6 @@ public interface AudienceRepository extends JpaRepository<Audience, Integer> {
 
     List<Audience> findAllByIdDossier(Plainte plainte);
 
+    Audience findById(int id);
+
 }

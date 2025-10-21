@@ -14,12 +14,13 @@
             font-family: "Times New Roman", Times, serif;
         }
         .page {
-            width: 210mm;
+            /* Retirer ces propriétés de mise en page spécifique au navigateur si vous utilisez @page */
+            /* width: 210mm;
             height: 190mm;
             margin: 24px auto;
+            border: 1px solid #ccc;
+            background: white; */
             padding: 18mm;
-            background: white;
-            border: 1px solid #ccc; /* remplacé box-shadow */
             position: relative;
         }
         @page {
@@ -33,7 +34,8 @@
         .emblem {
             width: 90px; height: 90px; margin: 6px auto 10px;
             text-align: center;
-            display: table;
+            /* CORRECTION: Utiliser 'display: block' avec 'margin: auto' pour le centrage */
+            display: block;
         }
         .emblem img { display: block; margin: auto; width: 100%; }
         h1.title {
@@ -42,20 +44,36 @@
         }
         p { font-size: 12pt; line-height: 1.6; text-align: justify; }
 
+        /* ****************************************************** */
+        /* CORRECTION POUR LA COMPATIBILITÉ PDF (SIGNATURE) */
+        /* Remplacer 'display: table' par 'display: block' */
+        /* ****************************************************** */
         .signature-box {
             height: 50mm;
+            /* Centrage via marges auto */
             margin: 30px auto 0;
             border: 1px dashed #bbb;
             width: 50%;
             text-align: center;
-            display: table;
+            /* C'EST LA CLEF : Remplacer display: table par display: block */
+            display: block;
             color: #888;
             font-size: 11pt;
+            /* Peut aider au centrage vertical du contenu dans la boîte */
+            line-height: 50mm;
         }
+        /* Ajustement de l'image de signature à l'intérieur de la boîte */
         .signature-box img{
-            width: 100%;
-            height: 100%;
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+            /* Centrer l'image à l'intérieur du bloc */
+            display: block;
+            margin: auto;
         }
+        /* ****************************************************** */
+
 
         .meta {
             position: absolute;
@@ -82,7 +100,7 @@
     </div>
 
     <div class="emblem">
-        <img width="100%" src="images/logo.png" alt="embleme"/>
+        <img width="100%" th:src="@{${logo}}" alt="embleme"/>
     </div>
 
     <h1 class="title">NOTE DE PARTAGE DE DOSSIER</h1>
@@ -98,7 +116,6 @@
     <p>
         La présente note est établie pour servir et valoir ce que de droit.
     </p>
-
 
     <div class="signature-box">
         <img th:src="@{${signature_utilisateur_a}}" alt="Signature" />

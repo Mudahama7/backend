@@ -4,6 +4,7 @@ import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
 import backend.dto.DashboardNeeds;
 import backend.dto.newEntityRequest.NewAffaire;
+import backend.dto.updateEntityRequest.UpdateAffaire;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
 import backend.model.enums.Role;
@@ -145,6 +146,14 @@ public class PlainteServiceImpl implements PlainteService {
             dashboardNeeds = partageAffaireService.provideDashboardNeeds();
         }
         return dashboardNeeds;
+    }
+
+    @Override
+    public boolean updateAffaireInfo(UpdateAffaire updateAffaire) {
+        Plainte affaireToUpdate = findById(updateAffaire.getIdAffaire());
+        Plainte affaireUpdate = plainteMapper.updateInformations(updateAffaire, affaireToUpdate);
+        plainteRepository.save(affaireUpdate);
+        return true;
     }
 
 }

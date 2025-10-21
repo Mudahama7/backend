@@ -5,19 +5,17 @@ import backend.dto.subObjects.JugementsInformations;
 import backend.model.JugementFinal;
 import backend.model.Plainte;
 import backend.model.enums.StatutJugement;
-import backend.service.utils.SupabaseStorageService;
+import backend.service.utils.MinioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 @AllArgsConstructor
 @Service
 public class JugementMapper {
 
-    private final SupabaseStorageService supabaseStorageService;
+    private final MinioService minioService;
 
-    public JugementFinal mapFromNewJugementFinalReqToJugementFinal(NewJugementFinal newJugementFinal, Plainte plainte) throws IOException {
+    public JugementFinal mapFromNewJugementFinalReqToJugementFinal(NewJugementFinal newJugementFinal, Plainte plainte) throws Exception {
 
         JugementFinal jugementFinal = new JugementFinal();
         jugementFinal.setIdDossier(plainte);
@@ -25,9 +23,7 @@ public class JugementMapper {
         jugementFinal.setMontantDomages(Double.valueOf(newJugementFinal.getMontantDommage()));
         jugementFinal.setStatut(StatutJugement.valueOf(newJugementFinal.getStatutJugement()));
 
-        byte[] copieJugementScannee = newJugementFinal.getPieceJointe().getBytes();
-        String fileName = "jugement final dans l'affaire "+ plainte.getPlaignant().getNom() +" Vs "+ plainte.getDefendeur().getNom();
-        String urlFile = supabaseStorageService.uploadFile(copieJugementScannee, fileName, "application/pdf");
+        String urlFile = minioService.uploadFile(newJugementFinal.getPieceJointe());
 
         jugementFinal.setCopieJugementScannee(urlFile);
 

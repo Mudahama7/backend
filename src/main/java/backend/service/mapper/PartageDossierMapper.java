@@ -7,13 +7,13 @@ import backend.model.HistoriquePartageDuDossier;
 import backend.model.Plainte;
 import backend.model.Utilisateur;
 import backend.service.utils.FileGenerator;
-import backend.service.utils.SupabaseStorageService;
+import backend.service.utils.MinioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.context.Context;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 @AllArgsConstructor
@@ -21,13 +21,14 @@ import java.time.LocalDate;
 public class PartageDossierMapper {
 
     private final FileGenerator fileGenerator;
-    private final SupabaseStorageService supabaseStorageService;
     private final SpringTemplateEngine templateEngine;
+    private final FileMapper fileMapper;
+    private final MinioService minioService;
 
     public HistoriquePartageDuDossier mapFromNewShareToHistory(
             NewSharingAffaireRequest newShare,
             Utilisateur sharingDossierAuthor,
-            Plainte sharedDossier) throws IOException {
+            Plainte sharedDossier) throws Exception {
 
         HistoriquePartageDuDossier newPartage =  new HistoriquePartageDuDossier();
 
@@ -38,13 +39,11 @@ public class PartageDossierMapper {
                 sharingDossierAuthor.getSignatureUrlImage()
         );
 
-        String fileName = "note_de_partage_numero "+newPartage.getId();
+        String fileName = "note_de_partage_numero "+generateSharingUniqueKey();
 
-        String storedFileUrl = supabaseStorageService.uploadFile(
-                fileGenerated,
-                fileName,
-                "application/pdf"
-        );
+        MultipartFile mappedFile = fileMapper.mapFromByteArrayToMultipartFile(fileGenerated, fileName);
+
+        String storedFileUrl = minioService.uploadFile(mappedFile);
 
         newPartage.setNomDestinataire(newShare.getNomDestinataire());
         newPartage.setResumeDossierPartage(newShare.getResumeDossierPartage());
@@ -63,6 +62,7 @@ public class PartageDossierMapper {
     ){
         Context context = new Context();
 
+        context.setVariable("logo", "http://localhost:9001/api/v1/download-shared-object/aHR0cDovLzEyNy4wLjAuMTo5MDAwL3BpZWNlcy1qb2ludGVzLXNnZWRqLXN5c3RlbS9sb2dvLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPTFSSk9COU00TzFONjJJMFpKWUlMJTJGMjAyNTEwMjElMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMDIxVDIyMjYwMlomWC1BbXotRXhwaXJlcz00MzIwMCZYLUFtei1TZWN1cml0eS1Ub2tlbj1leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkyTmxjM05MWlhraU9pSXhVa3BQUWpsTk5FOHhUall5U1RCYVNsbEpUQ0lzSW1WNGNDSTZNVGMyTVRFeU9ESTFNeXdpY0dGeVpXNTBJam9pYldSb0luMC43Vkw4Y3U1d2FPX2FLYTdIUUEzZEFqaEdNWWRJaDFiMG5xT2VsaVkxOHo3b2o4MldyMUxLVmVQa1hWQWdMUlctdk1Cd3prM1Bxd29EbXVHeUtQQmhrZyZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmdmVyc2lvbklkPW51bGwmWC1BbXotU2lnbmF0dXJlPWZiYjRhNzcwZDNiNTVhMzNkMTQ2YTk5Y2Y3Mzg2MzBiOTExNjI3ZWJjMDUzZDcyYzljNzliNmQxMDgzYzJiYmM");
         context.setVariable("date_partage", LocalDate.now());
         context.setVariable("utilisateur_a", nameAuthor);
         context.setVariable("nom_dossier",nameDossier);
@@ -90,5 +90,17 @@ public class PartageDossierMapper {
                 .datePartage(story.getDatePartageDossier().toString())
                 .build();
     }
+
+
+    private String generateSharingUniqueKey(){
+        String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        StringBuilder keyWord = new StringBuilder();
+        for (int i = 0; i < 4; i++) {
+            int index = (int) (Math.random() * chars.length());
+            keyWord.append(chars.charAt(index));
+        }
+        return keyWord.toString();
+    }
+
 
 }

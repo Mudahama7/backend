@@ -47,6 +47,20 @@ public class AudienceMapper {
                 .heureAudience(audience.getHeureAudience())
                 .urlAudienceFile(audience.getUrlFile())
                 .causeInscrite(audience.getCauseInscrit())
+                .signedByThePresident(audience.isSignedByThePresident())
+                .build();
+    }
+
+
+    public NewAudience mapFromEntityToNewAudienceReq(Audience data){
+        return NewAudience.builder()
+                .idPlainte(String.valueOf(data.getIdDossier().getIdDossier()))
+                .annee(data.getAnneeAudience())
+                .jour(data.getJourAudience())
+                .mois(data.getMoisAudience())
+                .dateAudience(data.getDateAudience())
+                .heureDebut(data.getHeureAudience())
+                .causeInscrit(data.getCauseInscrit())
                 .build();
     }
 

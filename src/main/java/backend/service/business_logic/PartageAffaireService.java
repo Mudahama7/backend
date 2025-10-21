@@ -14,7 +14,7 @@ import java.util.List;
 
 public interface PartageAffaireService {
 
-    boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws IOException, MessagingException;
+    boolean shareAffaire(NewSharingAffaireRequest newSharingAffaireRequest, Utilisateur sharingDossierAuthor, Plainte concernedAffair) throws Exception;
 
     List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom);
 

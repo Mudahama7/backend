@@ -12,5 +12,6 @@ public class AudiencePourAffaireDetails {
     private String urlAudienceFile;
     private String nameFile;
     private String causeInscrite;
+    private boolean signedByThePresident;
 
 }

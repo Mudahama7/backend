@@ -14,8 +14,8 @@ public class AffaireDetails {
     private PartiesPrenantes infoDefendeur;
     private InformationAffairePourDetails informationDeLAffaire;
     private List<HistoriquePartageDossierDto> historiquePartageDossierDtos;
-    private List<AudiencePourAffaireDetails> listDAudiences;
-    private List<PieceJointePourAffaireDetails> listPiecesJointes;
-    private List<JugementsInformations> listJugements;
+    private List<AudiencePourAffaireDetails> AudiencePourAffaireDetails;
+    private List<PieceJointePourAffaireDetails> PieceJointePourAffaireDetails;
+    private List<JugementsInformations> JugementsInformations;
 
 }

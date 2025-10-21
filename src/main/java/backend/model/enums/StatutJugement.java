@@ -6,5 +6,5 @@ import lombok.Getter;
 public enum StatutJugement {
     Executoire,
     En_appel,
-    etc
+    Annule
 }

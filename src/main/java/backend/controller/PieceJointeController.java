@@ -28,7 +28,7 @@ public class PieceJointeController {
             @RequestParam String nomFile,
             @RequestParam String typePiece,
             @RequestParam MultipartFile multipartFile
-            ) throws IOException {
+            ) throws Exception {
         NewPieceJointe reqBody = NewPieceJointe.builder()
                 .idAffaire(idAffaire)
                 .nomFile(nomFile)

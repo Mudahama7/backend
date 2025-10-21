@@ -8,11 +8,9 @@ import backend.repository.PieceJointeAuDossierRepository;
 import backend.service.business_logic.PieceJointeService;
 import backend.service.business_logic.PlainteService;
 import backend.service.utils.ConnectedUserGetter;
-import backend.service.utils.SupabaseStorageService;
+import backend.service.utils.MinioService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
 
 
 @AllArgsConstructor
@@ -21,16 +19,14 @@ public class PieceJointeServiceImpl implements PieceJointeService {
 
     private final PieceJointeAuDossierRepository pieceJointeAuDossierRepository;
     private final PlainteService plainteService;
-    private final SupabaseStorageService supabaseStorageService;
     private final ConnectedUserGetter connectedUserGetter;
+    private final MinioService minioService;
 
     @Override
-    public boolean joinPieceToAffaire(NewPieceJointe newPieceJointe) throws IOException {
+    public boolean joinPieceToAffaire(NewPieceJointe newPieceJointe) throws Exception {
         Plainte concernedAffair = plainteService.findById(newPieceJointe.getIdAffaire());
-        String ulrFileSaved = supabaseStorageService.uploadFile(
-                newPieceJointe.getMultipartFile().getBytes(),
-                newPieceJointe.getNomFile(),
-                "application/pdf"
+        String ulrFileSaved = minioService.uploadFile(
+                newPieceJointe.getMultipartFile()
         );
 
         PieceJointeAuDossier pieceJointeAuDossier = new PieceJointeAuDossier();

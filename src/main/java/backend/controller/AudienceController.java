@@ -13,10 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 
@@ -30,7 +27,7 @@ public class AudienceController {
 
     @PreAuthorize("hasAuthority('fixer_date_pour_une_affaire')")
     @PostMapping("nouvelle_audience/")
-    public ResponseEntity<?> nouvelleAudience(@RequestBody NewAudience newAudience) throws IOException, MessagingException {
+    public ResponseEntity<?> nouvelleAudience(@RequestBody NewAudience newAudience) throws Exception {
         if (audienceService.verifyIfSignaturesExist()) {
 
             Plainte concernedAffaire = plainteService.findById(newAudience.getIdPlainte());
@@ -49,5 +46,10 @@ public class AudienceController {
         }
     }
 
+    @PreAuthorize("hasAuthority('signer_ordonnancement')")
+    @PutMapping("signer_ordonnancement/{idAudience}")
+    public ResponseEntity<Boolean> signerOrdonnancement(@PathVariable String idAudience) throws Exception {
+        return ResponseEntity.ok(audienceService.signerOrdonnByPreso(idAudience));
+    }
 
 }

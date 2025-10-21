@@ -3,6 +3,7 @@ package backend.controller;
 import backend.dto.AffaireDetails;
 import backend.dto.AffaireDtoPourList;
 import backend.dto.newEntityRequest.NewAffaire;
+import backend.dto.updateEntityRequest.UpdateAffaire;
 import backend.service.business_logic.PlainteService;
 import backend.service.utils.ConnectedUserGetter;
 import jakarta.mail.MessagingException;
@@ -12,7 +13,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -51,6 +51,12 @@ public class PlainteController {
     @GetMapping("voir_detail_affaire/{idDossier}/")
     public ResponseEntity<AffaireDetails> voirDetailsAffaire(@PathVariable String idDossier){
         return ResponseEntity.ok(plainteService.findAllAffairDetails(idDossier));
+    }
+
+    @PreAuthorize("hasAuthority('modifier_affaire')")
+    @PutMapping("modifier_affaire/")
+    public ResponseEntity<Boolean> modifierAffaire(@RequestBody UpdateAffaire updateAffaire){
+        return ResponseEntity.ok(plainteService.updateAffaireInfo(updateAffaire));
     }
 
 }
