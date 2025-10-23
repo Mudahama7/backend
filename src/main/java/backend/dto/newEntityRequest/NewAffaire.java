@@ -9,7 +9,7 @@ public class NewAffaire {
     private PartiesPrenantes plaignant;
     private PartiesPrenantes defendeur;
     private String natureLitige;
-    private String descriptionDuFaits;
+    private String descriptionDesFaits;
     private String caution;
     private String autresParties;
 

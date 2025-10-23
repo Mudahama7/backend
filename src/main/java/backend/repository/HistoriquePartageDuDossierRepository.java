@@ -1,10 +1,7 @@
 package backend.repository;
 
 import backend.model.HistoriquePartageDuDossier;
-import backend.model.Plainte;
 import backend.model.enums.StatutDossier;
-import org.springframework.data.domain.Limit;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -15,6 +12,15 @@ import java.util.List;
 public interface HistoriquePartageDuDossierRepository extends JpaRepository<HistoriquePartageDuDossier, Integer> {
 
     List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom);
+
+    @Query("SELECT h FROM HistoriquePartageDuDossier h " +
+            "WHERE h.nomDestinataire = :nomDestinataire " +
+            "AND h.affaireShared.statutDossier <> :archiveStatus")
+    List<HistoriquePartageDuDossier> findAllByNomDestinataireAndStatutPlainteNotArchive(
+            @Param("nomDestinataire") String nomDestinataire,
+            @Param("archiveStatus") StatutDossier archiveStatus
+    );
+
 
     @Query("SELECT story FROM HistoriquePartageDuDossier story " +
             "WHERE story.dateLectureDossierPartage = :dateLecture " +

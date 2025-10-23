@@ -16,6 +16,8 @@ public enum Permission {
     FIXER_DATE_POUR_UNE_AFFAIRE("fixer_date_pour_une_affaire"),
     PRONONCER_SON_JUGEMENT("prononcer_son_jugement"),
     PARTAGER_UNE_AFFAIRE("partager_une_affaire"),
+    ARCHIVER_UNE_AFFAIRE("archiver_une_affaire"),
+    SUPPRIMER_UNE_AFFAIRE("supprimer_une_affaire"),
 
     CREER_ORDONNANCEMENT("creer_ordonnancement"),
     SIGNER_ORDONNANCEMENT("signer_ordonnancement"),

@@ -7,6 +7,7 @@ import lombok.Data;
 @Data
 public class AudiencePourAffaireDetails {
 
+    private String idAudience;
     private String dateAudience;
     private String heureAudience;
     private String urlAudienceFile;

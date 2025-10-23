@@ -45,23 +45,6 @@ public class PlainteServiceImpl implements PlainteService {
         return true;
     }
 
-    private void sendMailPourPrevenirLeConcerne(String email, String nom) throws MessagingException {
-
-        String mailText = "Bonjour M. " + nom + ",\n\n"
-                + "Par la présente, nous vous informons que vous avez été cité en qualité de défendeur "
-                + "dans une affaire enregistrée auprès du Tribunal de Commerce de Goma.\n\n"
-                + "Nous vous invitons à prendre connaissance de cette procédure et à vous préparer en conséquence.\n\n"
-                + "Cordialement,\n"
-                + "Le Greffe du Tribunal de Commerce de Goma";
-
-        emailService.sendEmail(
-                email,
-                mailText,
-                "Notification d'une plainte déposée à votre encontre"
-        );
-
-    }
-
     @Override
     public Plainte findById(String id) {
         return plainteRepository.findById(Integer.parseInt(id)).orElse(null);
@@ -72,9 +55,9 @@ public class PlainteServiceImpl implements PlainteService {
     public List<AffaireDtoPourList> findAll() {
         Utilisateur connectedUser = connectedUserGetter.getConnectedUser();
         if (connectedUser.getRole() == Role.SECRETAIRE){
-            return plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUserGetter.getConnectedUser()).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            return plainteRepository.findAllByDeposeChezAndStatutDossierNotArchive(connectedUser, StatutDossier.Archive).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
         }else if(connectedUser.getRole() == Role.ADMINISTRATOR) {
-            return plainteRepository.findAll().stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            return plainteRepository.findAllUnArchivedAffairs(StatutDossier.Archive).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
         }
         else {
             return findDossiersQuiMeSontPartages();
@@ -154,6 +137,56 @@ public class PlainteServiceImpl implements PlainteService {
         Plainte affaireUpdate = plainteMapper.updateInformations(updateAffaire, affaireToUpdate);
         plainteRepository.save(affaireUpdate);
         return true;
+    }
+
+    @Override
+    public void jugerAffaire(Plainte concernedAffair) {
+        concernedAffair.setStatutDossier(StatutDossier.Juge);
+        plainteRepository.save(concernedAffair);
+    }
+
+    @Override
+    public Boolean archiverAffaire(String idDossier) {
+        Plainte concernedAffair = findById(idDossier);
+        concernedAffair.setStatutDossier(StatutDossier.Archive);
+        plainteRepository.save(concernedAffair);
+        return true;
+    }
+
+    @Override
+    public List<AffaireDtoPourList> findAllArchivedAffairs() {
+        return plainteRepository.findAllByStatut(StatutDossier.Archive).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+    }
+
+    @Override
+    public Boolean supprimerAffaire(String idDossier) {
+        plainteRepository.deleteById(Integer.parseInt(idDossier));
+        return true;
+    }
+
+    @Override
+    public Boolean desarchiverAffaire(String idDossier) {
+        Plainte concernedAffair = findById(idDossier);
+        concernedAffair.setStatutDossier(StatutDossier.EnCours);
+        plainteRepository.save(concernedAffair);
+        return true;
+    }
+
+    private void sendMailPourPrevenirLeConcerne(String email, String nom) throws MessagingException {
+
+        String mailText = "Bonjour M. " + nom + ",\n\n"
+                + "Par la présente, nous vous informons que vous avez été cité en qualité de défendeur "
+                + "dans une affaire enregistrée auprès du Tribunal de Commerce de Goma.\n\n"
+                + "Nous vous invitons à prendre connaissance de cette procédure et à vous préparer en conséquence.\n\n"
+                + "Cordialement,\n"
+                + "Le Greffe du Tribunal de Commerce de Goma";
+
+        emailService.sendEmail(
+                email,
+                mailText,
+                "Notification d'une plainte déposée à votre encontre"
+        );
+
     }
 
 }

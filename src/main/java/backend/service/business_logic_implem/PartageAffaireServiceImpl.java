@@ -62,7 +62,7 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
 
     @Override
     public List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom) {
-        return historiquePartageDuDossierRepository.findAllByNomDestinataire(nom);
+        return historiquePartageDuDossierRepository.findAllByNomDestinataireAndStatutPlainteNotArchive(nom, StatutDossier.Archive);
     }
 
     @Override

@@ -43,17 +43,18 @@ public class Plainte {
     @Enumerated(EnumType.STRING)
     private StatutDossier statutDossier = StatutDossier.Depose;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plainte")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "plainte", orphanRemoval = true)
     private List<PieceJointeAuDossier> pieceJointeAuDossiers;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier", orphanRemoval = true)
     private List<Audience> listeDAudiences;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "idDossier", orphanRemoval = true)
     private List<JugementFinal> jugementFinal;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "affaireShared")
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "affaireShared", orphanRemoval = true)
     private List<HistoriquePartageDuDossier> historiquePartageDuDossiers;
+
 
     @ManyToOne
     private Utilisateur deposeChez;

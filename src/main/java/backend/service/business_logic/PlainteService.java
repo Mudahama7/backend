@@ -9,7 +9,6 @@ import backend.model.Plainte;
 import jakarta.mail.MessagingException;
 
 import java.util.List;
-import java.util.Map;
 
 public interface PlainteService {
 
@@ -31,4 +30,13 @@ public interface PlainteService {
 
     boolean updateAffaireInfo(UpdateAffaire updateAffaire);
 
+    void jugerAffaire(Plainte concernedAffair);
+
+    Boolean archiverAffaire(String idDossier);
+
+    List<AffaireDtoPourList> findAllArchivedAffairs();
+
+    Boolean supprimerAffaire(String idDossier);
+
+    Boolean desarchiverAffaire(String idDossier);
 }

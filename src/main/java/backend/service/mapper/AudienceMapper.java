@@ -5,7 +5,6 @@ import backend.dto.newEntityRequest.NewAudience;
 import backend.dto.subObjects.AudiencePourAffaireDetails;
 import backend.model.Audience;
 import backend.model.Plainte;
-import backend.service.business_logic.PlainteService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -43,6 +42,7 @@ public class AudienceMapper {
 
     public AudiencePourAffaireDetails mapFromEntityToAudiencePourAffaireDetails(Audience audience) {
         return AudiencePourAffaireDetails.builder()
+                .idAudience(String.valueOf(audience.getId()))
                 .dateAudience(audience.getDateAudience())
                 .heureAudience(audience.getHeureAudience())
                 .urlAudienceFile(audience.getUrlFile())
@@ -50,7 +50,6 @@ public class AudienceMapper {
                 .signedByThePresident(audience.isSignedByThePresident())
                 .build();
     }
-
 
     public NewAudience mapFromEntityToNewAudienceReq(Audience data){
         return NewAudience.builder()
@@ -63,7 +62,5 @@ public class AudienceMapper {
                 .causeInscrit(data.getCauseInscrit())
                 .build();
     }
-
-
 
 }

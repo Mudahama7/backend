@@ -27,7 +27,7 @@ public class PlainteMapper {
         plainte.setPlaignant(partiesPrenantesMapper.mapFromDtoToEntity(newAffaire.getPlaignant()));
         plainte.setDefendeur(partiesPrenantesMapper.mapFromDtoToEntity(newAffaire.getDefendeur()));
         plainte.setNatureLitige(newAffaire.getNatureLitige());
-        plainte.setDescriptionDesFaits(newAffaire.getDescriptionDuFaits());
+        plainte.setDescriptionDesFaits(newAffaire.getDescriptionDesFaits());
         plainte.setCaution(Double.valueOf(newAffaire.getCaution()));
         plainte.setAutresParties(newAffaire.getAutresParties());
 

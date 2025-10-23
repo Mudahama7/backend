@@ -30,8 +30,15 @@ public class PlainteController {
 
     @PreAuthorize("hasAuthority('consulter_affaire')")
     @GetMapping("find_all/")
-    public ResponseEntity<List<AffaireDtoPourList>> findAffairesSecretaires(){
+    public ResponseEntity<List<AffaireDtoPourList>> findAllAffairs(){
         return ResponseEntity.ok(plainteService.findAll());
+    }
+
+
+    @PreAuthorize("hasAuthority('consulter_affaire')")
+    @GetMapping("find_all_archived_affairs/")
+    public ResponseEntity<List<AffaireDtoPourList>> find_all_archived_affairs(){
+        return ResponseEntity.ok(plainteService.findAllArchivedAffairs());
     }
 
     @PreAuthorize("hasAuthority('approuver_affaire')")
@@ -57,6 +64,24 @@ public class PlainteController {
     @PutMapping("modifier_affaire/")
     public ResponseEntity<Boolean> modifierAffaire(@RequestBody UpdateAffaire updateAffaire){
         return ResponseEntity.ok(plainteService.updateAffaireInfo(updateAffaire));
+    }
+
+    @PreAuthorize("hasAuthority('archiver_une_affaire')")
+    @PutMapping("archiver/{idDossier}/")
+    public ResponseEntity<Boolean> archiverAffaire(@PathVariable String idDossier){
+        return ResponseEntity.ok(plainteService.archiverAffaire(idDossier));
+    }
+
+    @PreAuthorize("hasAuthority('archiver_une_affaire')")
+    @PutMapping("desarchiver/{idDossier}/")
+    public ResponseEntity<Boolean> desarchiverAffaire(@PathVariable String idDossier){
+        return ResponseEntity.ok(plainteService.desarchiverAffaire(idDossier));
+    }
+
+    @PreAuthorize("hasAuthority('supprimer_une_affaire')")
+    @DeleteMapping("supprimer/{idDossier}/")
+    public ResponseEntity<Boolean> supprimerAffaire(@PathVariable String idDossier){
+        return ResponseEntity.ok(plainteService.supprimerAffaire(idDossier));
     }
 
 }

@@ -17,10 +17,22 @@ public interface PlainteRepository extends JpaRepository<Plainte, Integer> {
     @Query("SELECT p FROM Plainte p WHERE p.deposeChez = :user")
     List<Plainte> findTousLesDossiersDeposeChezMoi(@Param("user")Utilisateur user);
 
+    @Query("SELECT p FROM Plainte p WHERE p.deposeChez = :user AND p.statutDossier <> :archiveStatus")
+    List<Plainte> findAllByDeposeChezAndStatutDossierNotArchive(
+            @Param("user") Utilisateur user,
+            @Param("archiveStatus") StatutDossier archiveStatus
+    );
+
+
     @Query("SELECT p FROM Plainte p WHERE p.statutDossier = :statut AND p.deposeChez = :user")
     List<Plainte> findAllByStatutAndDeposeChez(
             @Param("statut") StatutDossier statut,
             @Param("user") Utilisateur user
+    );
+
+    @Query("SELECT p FROM Plainte p WHERE p.statutDossier <> :statut")
+    List<Plainte> findAllUnArchivedAffairs(
+            @Param("statut") StatutDossier statut
     );
 
     List<Plainte> findTop10ByDeposeChezOrderByDateDepotPlainteDesc(Utilisateur deposeChez);
