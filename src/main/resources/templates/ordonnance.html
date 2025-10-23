@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Ordonnance de fixation de date d'audience</title>
+
+    <style>
+        * { box-sizing: border-box; }
+        html, body { height: 100%; }
+        body {
+            background: #f1f3f5;
+            margin: 0;
+            color: #111;
+            font-family: "Times New Roman", Times, serif;
+        }
+        .page {
+            padding: 18mm;
+            position: relative;
+        }
+        @page {
+            size: A4 portrait;
+            margin: 20mm; /* Marge par défaut pour le PDF */
+        }
+        .center { text-align: center; }
+        .uppercase { text-transform: uppercase; }
+        .smallcaps { font-variant: small-caps; }
+        .muted { color: #555; }
+        .header { line-height: 1.25; }
+
+        .emblem {
+            width: 90px;
+            height: 90px;
+            margin: 6px auto 10px;
+            /* display: table; -> Remplacer par block ou laisser tel quel si c'est pour centrer */
+            display: block;
+            text-align: center;
+        }
+        .emblem img {
+            display: block;
+            margin: auto;
+            width: 100%;
+        }
+
+        h1.title {
+            font-size: 15pt;
+            text-align: center;
+            margin: 14px 0 20px;
+        }
+
+        p { font-size: 12pt; line-height: 1.6; text-align: justify; }
+
+
+        .date-section {
+            text-align: right;
+            margin-bottom: 20px;
+        }
+
+        .sign-row {
+            width: 100%;
+            margin-top: 60px;
+            /* Clearfix pour contenir les éléments flottants */
+            overflow: hidden;
+        }
+
+        .sign {
+            float: left; /* C'EST LA CLEF : Aligner les éléments côte à côte */
+            width: 50%; /* Deux colonnes */
+            text-align: center;
+            /* vertical-align: top; -> Remplacé par le flux normal de float */
+        }
+
+        .signature-box {
+            height: 50mm;
+            margin: 10px auto;
+            border: 1px dashed #bbb;
+            width: 80%;
+            /* Remplacer display: table par display: block */
+            display: block;
+            text-align: center;
+            color: #888;
+            font-size: 11pt;
+            line-height: 50mm; /* Peut être utilisé pour centrer verticalement le contenu de la boîte si nécessaire */
+        }
+
+        /* Assurez-vous que l'image de signature remplit bien la boîte */
+        .signature-box img{
+            max-width: 100%;
+            max-height: 100%;
+            height: auto;
+            width: auto;
+            /* display: block; et margin: auto; pour centrer l'image */
+            display: block;
+            margin: auto;
+        }
+
+
+        .signature-name {
+            margin-top: 5px;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .sign .label { font-weight: 600; margin-bottom: 8px; }
+
+        @media print {
+            body { background: white; }
+            .page { border: none; margin: 0; }
+        }
+    </style>
+
+</head>
+<body>
+<main class="page">
+    <div class="header center uppercase smallcaps">
+        <div>République Démocratique du Congo</div>
+        <div>Pouvoir Judiciaire</div>
+        <div>Tribunal de Commerce de Goma</div>
+    </div>
+
+    <div class="emblem">
+        <img th:src="@{${logo}}" alt="emblem"/>
+    </div>
+
+    <div class="center smallcaps muted" style="margin-bottom:8px">Cabinet du Président</div>
+
+    <h1 class="title">
+        ORDONNANCE N°. <span th:text="${numeroOrdonnance}" style="text-decoration: underline;">...</span> /2025 <strong th:text="${portantSur}">PORTANT INJONCTION DE PAYER</strong>
+    </h1>
+    <br />
+
+
+    <div class="date-section">
+        <p style="text-align: left; ">
+            L'an deux mille vingt-cinq, le <span th:text="${jour}" style="text-decoration: underline;">...</span> jour du mois de <span th:text="${mois}" style="text-decoration: underline;">...</span>
+        </p>
+    </div>
+
+
+    <div th:utext="${corpsDocument}" style="text-align: justify;">
+        <p>
+
+        </p>
+    </div>
+
+    <div class="sign-row">
+        <div class="sign">
+            <div class="label">Le Greffier Divisionnaire</div>
+            <div class="signature-box">
+                <img th:src="@{${signature_greffier}}" alt="Signature du Greffier" />
+            </div>
+            <p class="signature-name" th:text="${nomGreffier}">BISHIKWABO NKANYAMASU Bienfait</p>
+        </div>
+        <div class="sign">
+            <div class="label">Le Président</div>
+            <div class="signature-box">
+                <img th:src="@{${signature_president}}" alt="Signature du Président" />
+            </div>
+            <p class="signature-name" th:text="${nomPresident}">KAKULE MUKE Thoms</p>
+        </div>
+    </div>
+
+</main>
+</body>
+</html>

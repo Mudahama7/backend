@@ -3,10 +3,17 @@ package backend.controller;
 import backend.dto.auth.LoginRequest;
 import backend.dto.auth.LoginResponse;
 import backend.dto.auth.ResetPasswordRequest;
+import backend.dto.newEntityRequest.NewAudience;
+import backend.dto.newEntityRequest.NewOrdonnance;
+import backend.exception.type_exception.SignatureMissMatchException;
+import backend.model.Plainte;
 import backend.service.business_logic.AuthService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
+import org.springframework.core.io.ByteArrayResource;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,5 +44,6 @@ public class AuthController {
                     .body("Cette adresse mail n'éxiste pas !");
         }
     }
+
 
 }
