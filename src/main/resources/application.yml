@@ -5,8 +5,8 @@ spring:
     name: backend
   datasource:
     url: jdbc:postgresql://localhost:5432/SGEDJ
-    username: postgres
-    password: 1012
+    username: mudahama
+    password: 7_mdh_79
     driver-class-name: org.postgresql.Driver
     hikari:
       auto-commit: false

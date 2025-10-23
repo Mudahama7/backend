@@ -22,6 +22,9 @@ public enum Permission {
     CREER_ORDONNANCEMENT("creer_ordonnancement"),
     SIGNER_ORDONNANCEMENT("signer_ordonnancement"),
 
+    CREER_ORDONNANCE("creer_ordonnance"),
+    SIGNER_ORDONNANCE("signer_ordonnance"),
+
     ACQUISITION_DOCUMENT("acquisition_document"),
     MODIFIER_DOCUMENT("modifier_document"),
     VALIDER_DOCUMENT("valider_document"),

@@ -1,9 +1,6 @@
 package backend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -18,7 +15,20 @@ public class Ordonnance {
 
     private LocalDate creationDate = LocalDate.now();
 
-    private boolean signatureGreffier;
-    private boolean signaturePresident;
+    private String urlFile;
+
+    @ManyToOne
+    private Plainte concernedAffair;
+
+    private String numeroOrdonnance;
+
+    private String portantSur;
+
+    @Lob
+    @Column(columnDefinition = "TEXT")
+    private String corpsDocument;
+
+    private boolean signatureGreffier = false;
+    private boolean signaturePresident = false;
 
 }

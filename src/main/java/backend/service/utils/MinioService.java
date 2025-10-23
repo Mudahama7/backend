@@ -20,6 +20,8 @@ public class MinioService{
     private MinioClient minioClient;
 
     private final String bucketName = "pieces-jointes-sgedj-system";
+
+
     public String uploadFile(MultipartFile file) throws Exception {
         String originalFilename = file.getOriginalFilename();
         String fileExtension = StringUtils.getFilenameExtension(originalFilename);

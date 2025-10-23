@@ -55,6 +55,8 @@ public class Plainte {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "affaireShared", orphanRemoval = true)
     private List<HistoriquePartageDuDossier> historiquePartageDuDossiers;
 
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "concernedAffair", orphanRemoval = true)
+    private List<Ordonnance> ordonnances;
 
     @ManyToOne
     private Utilisateur deposeChez;

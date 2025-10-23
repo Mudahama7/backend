@@ -67,8 +67,8 @@ public class UserController {
     }
 
     @PreAuthorize("hasAuthority('modifier_profil')")
-    @PutMapping("update_passwprd/")
-    public ResponseEntity<Boolean> updatePassword(UpdateUserPassword data){
+    @PutMapping("update_password/")
+    public ResponseEntity<Boolean> updatePassword(@RequestBody UpdateUserPassword data){
         return ResponseEntity.ok(utilisateurService.updatePassword(data));
     }
 

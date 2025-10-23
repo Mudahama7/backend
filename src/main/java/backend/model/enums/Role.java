@@ -26,7 +26,9 @@ public enum Role {
                     CONSULTER_UTILISATEURS,
                     PARTAGER_UNE_AFFAIRE,
                     ARCHIVER_UNE_AFFAIRE,
-                    SUPPRIMER_UNE_AFFAIRE
+                    SUPPRIMER_UNE_AFFAIRE,
+                    CREER_ORDONNANCE,
+                    SIGNER_ORDONNANCE
             )
     ),
 

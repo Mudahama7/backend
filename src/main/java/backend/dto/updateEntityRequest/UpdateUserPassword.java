@@ -9,4 +9,5 @@ public class UpdateUserPassword {
     String nouveauMotDePasse;
     String confirmerMotDePasse;
 
+
 }

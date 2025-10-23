@@ -15,12 +15,12 @@
             font-family: "Times New Roman", Times, serif;
         }
         .page {
-            padding: 18mm;
+            padding: 10mm;
             position: relative;
         }
         @page {
             size: A4 portrait;
-            margin: 20mm; /* Marge par défaut pour le PDF */
+            margin: 12mm; /* Marge par défaut pour le PDF */
         }
         .center { text-align: center; }
         .uppercase { text-transform: uppercase; }
@@ -48,7 +48,7 @@
             margin: 14px 0 20px;
         }
 
-        p { font-size: 12pt; line-height: 1.6; text-align: justify; }
+        p { font-size: 12pt; line-height: 1.9; text-align: justify; }
 
 
         .date-section {
@@ -125,19 +125,19 @@
     <div class="center smallcaps muted" style="margin-bottom:8px">Cabinet du Président</div>
 
     <h1 class="title">
-        ORDONNANCE N°. <span th:text="${numeroOrdonnance}" style="text-decoration: underline;">...</span> /2025 <strong th:text="${portantSur}">PORTANT INJONCTION DE PAYER</strong>
+        ORDONNANCE N°. <span th:text="${numeroOrdonnance}">...</span> /2025 <strong th:text="${portantSur}">PORTANT INJONCTION DE PAYER</strong>
     </h1>
     <br />
 
 
     <div class="date-section">
         <p style="text-align: left; ">
-            L'an deux mille vingt-cinq, le <span th:text="${jour}" style="text-decoration: underline;">...</span> jour du mois de <span th:text="${mois}" style="text-decoration: underline;">...</span>
+            L'an deux mille vingt-cinq, le <span th:text="${jour}">...</span> ème jour du mois de(d') <span th:text="${mois}">...</span>
         </p>
     </div>
 
 
-    <div th:utext="${corpsDocument}" style="text-align: justify;">
+    <div th:utext="${corpsDocument}" style="text-align: justify; line-height: 1.9;">
         <p>
 
         </p>
