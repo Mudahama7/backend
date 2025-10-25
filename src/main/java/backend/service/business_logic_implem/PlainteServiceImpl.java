@@ -172,6 +172,39 @@ public class PlainteServiceImpl implements PlainteService {
         return true;
     }
 
+    @Transactional(readOnly = true)
+    @Override
+    public List<AffaireDtoPourList> filterAffairs(String jour, String mois, String annee, String ordre) {
+
+        if (jour != null) {
+            if(ordre.equals("croissant")){
+                return plainteRepository.findByJourAsc(jour).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+            else if(ordre.equals("decroissant")){
+                return plainteRepository.findByJourDesc(jour).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+        } else if (mois != null) {
+            if(ordre.equals("croissant")){
+                return plainteRepository.findByMoisAsc(mois).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+            else if(ordre.equals("decroissant")){
+                return plainteRepository.findByMoisDesc(mois).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+        } else if (annee != null) {
+            if(ordre.equals("croissant")){
+                return plainteRepository.findByAnneeAsc(annee).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+            else if(ordre.equals("decroissant")){
+                return plainteRepository.findByAnneeDesc(annee).stream().map(plainteMapper::mapFromEntityToAffaireDtoList).toList();
+            }
+        } else {
+            return findAll();
+        }
+
+
+        return List.of();
+    }
+
     private void sendMailPourPrevenirLeConcerne(String email, String nom) throws MessagingException {
 
         String mailText = "Bonjour M. " + nom + ",\n\n"

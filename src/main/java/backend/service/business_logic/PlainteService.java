@@ -39,4 +39,6 @@ public interface PlainteService {
     Boolean supprimerAffaire(String idDossier);
 
     Boolean desarchiverAffaire(String idDossier);
+
+    List<AffaireDtoPourList> filterAffairs(String jour, String mois, String annee, String ordre);
 }

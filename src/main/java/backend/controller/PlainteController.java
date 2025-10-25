@@ -13,6 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @AllArgsConstructor
 @RestController
@@ -20,7 +21,6 @@ import java.util.List;
 public class PlainteController {
 
     private final PlainteService plainteService;
-    private final ConnectedUserGetter connectedUserGetter;
 
     @PreAuthorize("hasAuthority('create_affaire')")
     @PostMapping("nouvelle_affaire/")
@@ -83,5 +83,18 @@ public class PlainteController {
     public ResponseEntity<Boolean> supprimerAffaire(@PathVariable String idDossier){
         return ResponseEntity.ok(plainteService.supprimerAffaire(idDossier));
     }
+
+    @PreAuthorize("hasAuthority('consulter_affaire')")
+    @PostMapping("filtrer/")
+    public ResponseEntity<List<AffaireDtoPourList>> filterAffairs(@RequestBody Map<String, String> filtersParam){
+
+        String jour = filtersParam.get("jour");
+        String mois = filtersParam.get("mois");
+        String annee = filtersParam.get("annee");
+        String ordre = filtersParam.get("ordre");
+
+        return ResponseEntity.ok(plainteService.filterAffairs(jour, mois, annee, ordre));
+    }
+
 
 }
