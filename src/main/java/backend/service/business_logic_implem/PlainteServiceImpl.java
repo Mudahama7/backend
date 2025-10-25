@@ -114,7 +114,7 @@ public class PlainteServiceImpl implements PlainteService {
         } else if (connectedUser.getRole() == Role.ADMINISTRATOR) {
 
             dashboardNeeds.setTotalDossier(plainteRepository.findAll().size());
-            dashboardNeeds.setEnCours(plainteRepository.findAllByStatut(StatutDossier.Depose).size());
+            dashboardNeeds.setDepose(plainteRepository.findAllByStatut(StatutDossier.Depose).size());
             dashboardNeeds.setEnCours(plainteRepository.findAllByStatut(StatutDossier.EnCours).size());
             dashboardNeeds.setJuger(plainteRepository.findAllByStatut(StatutDossier.Juge).size());
             dashboardNeeds.setTopDixDerniersDossiers(
