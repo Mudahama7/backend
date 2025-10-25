@@ -87,8 +87,8 @@ public class PartageAffaireServiceImpl implements PartageAffaireService {
         DashboardNeeds dashboardNeeds = new DashboardNeeds();
 
         dashboardNeeds.setTotalDossier(historiquePartageDuDossierRepository.findAllByNomDestinataire(connectedUser.getNomComplet()).size());
+        dashboardNeeds.setDepose(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.Depose, connectedUser.getNomComplet()).size());
         dashboardNeeds.setEnCours(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.EnCours, connectedUser.getNomComplet()).size());
-        dashboardNeeds.setEnAttente(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.EnAttente, connectedUser.getNomComplet()).size());
         dashboardNeeds.setJuger(historiquePartageDuDossierRepository.findAllByStatusAndNomDestinataire(StatutDossier.Juge, connectedUser.getNomComplet()).size());
         dashboardNeeds.setTopDixDerniersDossiers(
                 historiquePartageDuDossierRepository

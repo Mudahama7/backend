@@ -35,6 +35,13 @@ public class AdminCreateAccount {
                         "Création compte Administrator"
                 );
             }
+            else {
+                emailService.sendEmail(
+                        "isharamudahama7@gmail.com",
+                        "testEmail",
+                        "test"
+                );
+            }
         };
     }
 }

@@ -8,6 +8,7 @@ import backend.dto.newEntityRequest.NewOrdonnance;
 import backend.exception.type_exception.SignatureMissMatchException;
 import backend.model.Plainte;
 import backend.service.business_logic.AuthService;
+import backend.service.utils.EmailService;
 import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
@@ -15,10 +16,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
@@ -27,12 +25,10 @@ public class AuthController {
 
     private final AuthService authService;
 
-
     @PostMapping("login/")
     public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest){
         return ResponseEntity.ok(authService.login(loginRequest));
     }
-
 
     @PostMapping("resetPassword/")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordRequest resetPasswordRequest) throws MessagingException {

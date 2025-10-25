@@ -28,8 +28,8 @@ spring:
   mail:
     host: smtp.gmail.com
     port: 587
-    username: unibank.app.informations@gmail.com
-    password: vmnh nxbj zqsv komd
+    username: sgdej.notifications@gmail.com
+    password: palp zxgk ktue tpyy
     properties:
       mail:
         smtp:

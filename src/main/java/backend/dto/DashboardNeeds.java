@@ -11,7 +11,7 @@ public class DashboardNeeds {
 
     private int totalDossier;
     private int enCours;
-    private int enAttente;
+    private int depose;
     private int juger;
     private List<AffaireDtoPourList> topDixDerniersDossiers;
 

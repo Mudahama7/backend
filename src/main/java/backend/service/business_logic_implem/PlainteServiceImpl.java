@@ -101,8 +101,8 @@ public class PlainteServiceImpl implements PlainteService {
         if (connectedUser.getRole() == Role.SECRETAIRE) {
 
             dashboardNeeds.setTotalDossier(plainteRepository.findTousLesDossiersDeposeChezMoi(connectedUser).size());
+            dashboardNeeds.setDepose(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Depose, connectedUser).size());
             dashboardNeeds.setEnCours(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnCours, connectedUser).size());
-            dashboardNeeds.setEnAttente(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.EnAttente, connectedUser).size());
             dashboardNeeds.setJuger(plainteRepository.findAllByStatutAndDeposeChez(StatutDossier.Juge, connectedUser).size());
             dashboardNeeds.setTopDixDerniersDossiers(
                     plainteRepository
@@ -114,8 +114,8 @@ public class PlainteServiceImpl implements PlainteService {
         } else if (connectedUser.getRole() == Role.ADMINISTRATOR) {
 
             dashboardNeeds.setTotalDossier(plainteRepository.findAll().size());
+            dashboardNeeds.setEnCours(plainteRepository.findAllByStatut(StatutDossier.Depose).size());
             dashboardNeeds.setEnCours(plainteRepository.findAllByStatut(StatutDossier.EnCours).size());
-            dashboardNeeds.setEnAttente(plainteRepository.findAllByStatut(StatutDossier.EnAttente).size());
             dashboardNeeds.setJuger(plainteRepository.findAllByStatut(StatutDossier.Juge).size());
             dashboardNeeds.setTopDixDerniersDossiers(
                     plainteRepository

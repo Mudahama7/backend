@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 @AllArgsConstructor
 @RestController
-@RequestMapping("api/authentication/")
+@RequestMapping("api/ordonnance/")
 public class OrdonnanceController {
 
     private final OrdonnanceService ordonnanceService;
@@ -31,7 +31,7 @@ public class OrdonnanceController {
 
 
     @PreAuthorize("hasAuthority('creer_ordonnance')")
-    @PostMapping("signer_ordonnance/{idOrdonnance}")
+    @PutMapping("signer_ordonnance/{idOrdonnance}/")
     public ResponseEntity<Boolean> signerOrdonnance(@PathVariable String idOrdonnance) throws Exception {
         return ResponseEntity.ok(ordonnanceService.signerOrdonnance(idOrdonnance));
     }
