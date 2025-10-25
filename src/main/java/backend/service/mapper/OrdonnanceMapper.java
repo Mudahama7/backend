@@ -12,8 +12,7 @@ public class OrdonnanceMapper {
     public Ordonnance mapFromNewObjectToEntity(NewOrdonnance data, Plainte concernedAffair){
         Ordonnance ordonnance = new Ordonnance();
 
-        ordonnance.setNumeroOrdonnance(data.getNumeroOrdonnance());
-        ordonnance.setCorpsDocument(data.getCorpsDocument());
+        ordonnance.setCorpsDocument(data.getCorsDocument());
         ordonnance.setPortantSur(data.getPortantSur());
         ordonnance.setConcernedAffair(concernedAffair);
 
@@ -22,10 +21,9 @@ public class OrdonnanceMapper {
 
     public NewOrdonnance mapFromEntityToObjectReq(Ordonnance data){
         return NewOrdonnance.builder()
-                .idPlainte(String.valueOf(data.getConcernedAffair().getIdDossier()))
-                .numeroOrdonnance(data.getNumeroOrdonnance())
+                .idAffaire(String.valueOf(data.getConcernedAffair().getIdDossier()))
                 .portantSur(data.getPortantSur())
-                .corpsDocument(data.getCorpsDocument())
+                .corsDocument(data.getCorpsDocument())
                 .build();
     }
 

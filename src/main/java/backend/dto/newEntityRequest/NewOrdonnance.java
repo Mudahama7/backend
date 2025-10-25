@@ -7,9 +7,8 @@ import lombok.Data;
 @Data
 public class NewOrdonnance {
 
-    String idPlainte;
-    String numeroOrdonnance;
+    String idAffaire;
     String portantSur;
-    String corpsDocument;
+    String corsDocument;
 
 }

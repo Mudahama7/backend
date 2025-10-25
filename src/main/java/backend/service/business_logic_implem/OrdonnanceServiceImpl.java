@@ -24,7 +24,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
-import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
@@ -57,14 +56,18 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         UserSignatures greffierSignatures = utilisateurService.getUserSignaturesUrl(Role.GREFFIER_DIV);
         UserSignatures presidentSignatures = utilisateurService.getUserSignaturesUrl(Role.PRESIDENT);
 
-        Context context = getContext(data, LocalDate.now(), presidentSignatures, greffierSignatures);
+        String tableLengthPlusOne = String.valueOf(ordonnanceRepository.count()+1);
+
+        Ordonnance ordonnance = ordonnanceMapper.mapFromNewObjectToEntity(data, plainteService.findById(data.getIdAffaire()));
+        ordonnance.setNumeroOrdonnance(tableLengthPlusOne);
+
+        Context context = getContext(data, LocalDate.now(), presidentSignatures, greffierSignatures, tableLengthPlusOne);
         String html = templateEngine.process("ordonnance", context);
         byte[] generatedFile = fileGenerator.generateFileFromHtml(html);
 
         MultipartFile mappedFile = fileMapper.mapFromByteArrayToMultipartFile(generatedFile, "fileName");
         String urlSavedFile = minioService.uploadFile(mappedFile);
 
-        Ordonnance ordonnance = ordonnanceMapper.mapFromNewObjectToEntity(data, plainteService.findById(data.getIdPlainte()));
         ordonnance.setUrlFile(urlSavedFile);
 
         ordonnanceRepository.save(ordonnance);
@@ -85,7 +88,7 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         UserSignatures greffierSignatures = utilisateurService.getUserSignaturesUrl(Role.GREFFIER_DIV);
         UserSignatures presidentSignatures = utilisateurService.getUserSignaturesUrl(Role.PRESIDENT);
 
-        Context context = getContext(mappedOrdonnanceObject, concernedOrdonnance.getCreationDate(), presidentSignatures, greffierSignatures);
+        Context context = getContext(mappedOrdonnanceObject, concernedOrdonnance.getCreationDate(), presidentSignatures, greffierSignatures, concernedOrdonnance.getNumeroOrdonnance());
         String html = templateEngine.process("ordonnance", context);
         byte[] generatedFile = fileGenerator.generateFileFromHtml(html);
 
@@ -120,11 +123,11 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
 
         Utilisateur connectedUser = utilisateurService.getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
-        NewSharingAffaireRequest shareReq = buildSharingReqObject(data.getIdPlainte(), greffierSignatures.getUserName());
-        partageAffaireService.shareAffaire(shareReq, connectedUser, plainteService.findById(data.getIdPlainte()));
+        NewSharingAffaireRequest shareReq = buildSharingReqObject(data.getIdAffaire(), greffierSignatures.getUserName());
+        partageAffaireService.shareAffaire(shareReq, connectedUser, plainteService.findById(data.getIdAffaire()));
 
-        shareReq = buildSharingReqObject(data.getIdPlainte(), presidentSignatures.getUserName());
-        partageAffaireService.shareAffaire(shareReq, connectedUser, plainteService.findById(data.getIdPlainte()));
+        shareReq = buildSharingReqObject(data.getIdAffaire(), presidentSignatures.getUserName());
+        partageAffaireService.shareAffaire(shareReq, connectedUser, plainteService.findById(data.getIdAffaire()));
 
     }
 
@@ -141,7 +144,7 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         UserSignatures greffierSignatures = utilisateurService.getUserSignaturesUrl(Role.GREFFIER_DIV);
         UserSignatures presidentSignatures = utilisateurService.getUserSignaturesUrl(Role.PRESIDENT);
 
-        String messageSubject = "Signature réquise pour l'Ordonnance n° "+data.getNumeroOrdonnance()+" (Affaire n° "+data.getIdPlainte()+")";
+        String messageSubject = "Signature réquise pour une ordonnance(Affaire n° "+data.getIdAffaire()+")";
         String corpsNotification = getNotificationBody("Greffier", data);
         emailService.sendEmail(greffierSignatures.getEmail(), corpsNotification, messageSubject);
 
@@ -151,15 +154,18 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
     }
 
     private String getNotificationBody(String recipientName, NewOrdonnance data){
+
+        Utilisateur connectedUser = utilisateurService.getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
+
         return "Cher "+recipientName+",\n\n" +
-                "Nous vous informons par la présente que l'ordonnance n° "+data.getNumeroOrdonnance()+", portant sur la nouvelle affaire enregistrée (Affaire n° "+data.getIdPlainte()+" ), a été rédigée et finalisée.\n\n" +
+                "Nous vous informons par la présente qu'une ordonnance, portant sur la nouvelle affaire enregistrée(Affaire n° "+data.getIdAffaire()+" ), a été rédigée et finalisée.\n\n" +
                 "Ce document est prêt et attend votre signature pour être officiellement validé. Nous vous prions de bien vouloir procéder à son examen et à sa signature dans les plus brefs délais.\n\n" +
                 "Cordialement,\n\n" +
-                "[Votre Nom/Service]\n" +
+                connectedUser.getNomComplet()+"-"+connectedUser.getRole()+"\n" +
                 "Tribunal de Commerce";
     }
 
-    private Context getContext(NewOrdonnance data, LocalDate dateOrdonnance, UserSignatures presidentSignatures, UserSignatures greffierSignatures) {
+    private Context getContext(NewOrdonnance data, LocalDate dateOrdonnance, UserSignatures presidentSignatures, UserSignatures greffierSignatures, String numeroOrdonnance) {
 
         Utilisateur connectedUser = utilisateurService.getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
@@ -168,13 +174,14 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         String nomDuMois = dateOrdonnance.format(formateurMois);
 
         Context context = new Context();
+        String urlPhoto = "http://localhost:9001/api/v1/download-shared-object/aHR0cDovLzEyNy4wLjAuMTo5MDAwL3BpZWNlcy1qb2ludGVzLXNnZWRqLXN5c3RlbS9sb2dvLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUMyVDAzUVdZMU1OM0pGVDRHVlhMJTJGMjAyNTEwMjUlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMDI1VDIzMjIzNFomWC1BbXotRXhwaXJlcz00MzE5OCZYLUFtei1TZWN1cml0eS1Ub2tlbj1leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkyTmxjM05MWlhraU9pSkRNbFF3TTFGWFdURk5Uak5LUmxRMFIxWllUQ0lzSW1WNGNDSTZNVGMyTVRRM056WTJNaXdpY0dGeVpXNTBJam9pYldSb0luMC4zaDB5ZjZnekd6Z0pjY3lDUDl5bExhcTcxbkVBZzBqUXN2TUx4R3o0Wm95NmNXalp5bEgxYjdWOHdIVWl3T2V3dTN4LVRoYmhIc01nUUhmRWt0ZDE4USZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmdmVyc2lvbklkPW51bGwmWC1BbXotU2lnbmF0dXJlPWY4ZjliYTU5ZDIwNDVhOGIwNzgxMzlkMWU2ZGJkZWJiYTRiMWU0ZjljNWFiZWUyOGU1ZWY3ZGE5MTFlZGQ0NzI";
 
-        context.setVariable("logo", "http://localhost:9001/api/v1/download-shared-object/aHR0cDovLzEyNy4wLjAuMTo5MDAwL3BpZWNlcy1qb2ludGVzLXNnZWRqLXN5c3RlbS9sb2dvLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPVAxNDVHMkFHSjVPWlRUSTQ1TVRWJTJGMjAyNTEwMjMlMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMDIzVDEzMDcxNFomWC1BbXotRXhwaXJlcz00MzIwMCZYLUFtei1TZWN1cml0eS1Ub2tlbj1leUpoYkdjaU9pSklVelV4TWlJc0luUjVjQ0k2SWtwWFZDSjkuZXlKaFkyTmxjM05MWlhraU9pSlFNVFExUnpKQlIwbzFUMXBVVkVrME5VMVVWaUlzSW1WNGNDSTZNVGMyTVRJMk16QTVPQ3dpY0dGeVpXNTBJam9pYldSb0luMC5rOVhxZWdNam1lajJ3cUd1Qm85S1l1SHE0WlVCU3k0X2wzb1BFelRJak10Qmx2Wk5FNXlHR1RtX1ZmOTQxMzRqRTFQMngxd0MzdXp0U1ZLVkZlNzZtUSZYLUFtei1TaWduZWRIZWFkZXJzPWhvc3QmdmVyc2lvbklkPW51bGwmWC1BbXotU2lnbmF0dXJlPTg0ODBkNGM0ZTFmN2EzMmFlYWIyZGJlNDVmZDZjM2UxOGUxOGVhY2Q2Y2JiYjAzZDcyZjlmM2I1YTdmZjVlNDk");
-        context.setVariable("numeroOrdonnance", data.getNumeroOrdonnance());
+        context.setVariable("logo", urlPhoto);
+        context.setVariable("numeroOrdonnance", numeroOrdonnance);
         context.setVariable("portantSur", data.getPortantSur());
         context.setVariable("jour", jourDuMois);
         context.setVariable("mois", nomDuMois);
-        context.setVariable("corpsDocument", data.getCorpsDocument());
+        context.setVariable("corpsDocument", data.getCorsDocument());
 
         if (connectedUser.getRole().equals(Role.PRESIDENT)){
             context.setVariable("nomPresident", presidentSignatures.getUserName());
