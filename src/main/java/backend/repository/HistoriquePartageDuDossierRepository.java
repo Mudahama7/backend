@@ -14,13 +14,16 @@ public interface HistoriquePartageDuDossierRepository extends JpaRepository<Hist
     List<HistoriquePartageDuDossier> findAllByNomDestinataire(String nom);
 
     @Query("SELECT h FROM HistoriquePartageDuDossier h " +
-            "WHERE h.nomDestinataire = :nomDestinataire " +
-            "AND h.affaireShared.statutDossier <> :archiveStatus")
+            "WHERE h.id IN (" +
+            "SELECT MAX(h2.id) FROM HistoriquePartageDuDossier h2 " +
+            "WHERE h2.nomDestinataire = :nomDestinataire " +
+            "AND h2.affaireShared.statutDossier <> :archiveStatus " +
+            "GROUP BY h2.nomDestinataire, h2.affaireShared.idDossier" +
+            ")")
     List<HistoriquePartageDuDossier> findAllByNomDestinataireAndStatutPlainteNotArchive(
             @Param("nomDestinataire") String nomDestinataire,
             @Param("archiveStatus") StatutDossier archiveStatus
     );
-
 
     @Query("SELECT story FROM HistoriquePartageDuDossier story " +
             "WHERE story.dateLectureDossierPartage = :dateLecture " +
