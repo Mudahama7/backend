@@ -19,7 +19,7 @@ public class OrdonnanceController {
     @PostMapping("create_ordonnance/")
     public ResponseEntity<Boolean> nouvelleOrdonnance(@RequestBody NewOrdonnance data) throws Exception {
         if (ordonnanceService.verifyIfSignaturesExist()) {
-            System.out.println("corps : "+data.getCorsDocument());
+
             return ResponseEntity.ok(ordonnanceService.creerOrdonnance(data));
 
         } else {
@@ -31,7 +31,7 @@ public class OrdonnanceController {
 
 
     @PreAuthorize("hasAuthority('creer_ordonnance')")
-    @PutMapping("signer_ordonnance/{idOrdonnance}/")
+    @PutMapping("signer_ordonnance/{idOrdonnance}")
     public ResponseEntity<Boolean> signerOrdonnance(@PathVariable String idOrdonnance) throws Exception {
         return ResponseEntity.ok(ordonnanceService.signerOrdonnance(idOrdonnance));
     }

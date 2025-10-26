@@ -27,6 +27,7 @@ import org.thymeleaf.spring6.SpringTemplateEngine;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Locale;
+import java.util.Optional;
 
 @AllArgsConstructor
 @Service
@@ -61,7 +62,7 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         Ordonnance ordonnance = ordonnanceMapper.mapFromNewObjectToEntity(data, plainteService.findById(data.getIdAffaire()));
         ordonnance.setNumeroOrdonnance(tableLengthPlusOne);
 
-        Context context = getContext(data, LocalDate.now(), presidentSignatures, greffierSignatures, tableLengthPlusOne);
+        Context context = getContext(data, LocalDate.now(), presidentSignatures, greffierSignatures, tableLengthPlusOne, Optional.empty());
         String html = templateEngine.process("ordonnance", context);
         byte[] generatedFile = fileGenerator.generateFileFromHtml(html);
 
@@ -88,7 +89,14 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         UserSignatures greffierSignatures = utilisateurService.getUserSignaturesUrl(Role.GREFFIER_DIV);
         UserSignatures presidentSignatures = utilisateurService.getUserSignaturesUrl(Role.PRESIDENT);
 
-        Context context = getContext(mappedOrdonnanceObject, concernedOrdonnance.getCreationDate(), presidentSignatures, greffierSignatures, concernedOrdonnance.getNumeroOrdonnance());
+        if (connectedUser.getRole().equals(Role.GREFFIER_DIV)) {
+            concernedOrdonnance.setSignatureGreffier(true);
+        }
+        else if(connectedUser.getRole().equals(Role.PRESIDENT)) {
+            concernedOrdonnance.setSignaturePresident(true);
+        }
+
+        Context context = getContext(mappedOrdonnanceObject, concernedOrdonnance.getCreationDate(), presidentSignatures, greffierSignatures, concernedOrdonnance.getNumeroOrdonnance(), Optional.of(concernedOrdonnance));
         String html = templateEngine.process("ordonnance", context);
         byte[] generatedFile = fileGenerator.generateFileFromHtml(html);
 
@@ -97,12 +105,7 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         String newUrlFile = minioService.uploadFile(mappedFile);
 
         concernedOrdonnance.setUrlFile(newUrlFile);
-        if (connectedUser.getRole().equals(Role.GREFFIER_DIV)) {
-            concernedOrdonnance.setSignatureGreffier(true);
-        }
-        else if(connectedUser.getRole().equals(Role.PRESIDENT)) {
-            concernedOrdonnance.setSignaturePresident(true);
-        }
+
         ordonnanceRepository.save(concernedOrdonnance);
 
         return true;
@@ -112,8 +115,6 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
     public Ordonnance findById(String idOrdonnance) {
         return ordonnanceRepository.findById(Integer.parseInt(idOrdonnance)).orElse(null);
     }
-
-
 
 
     private void shareAffair(NewOrdonnance data) throws Exception {
@@ -165,7 +166,7 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
                 "Tribunal de Commerce";
     }
 
-    private Context getContext(NewOrdonnance data, LocalDate dateOrdonnance, UserSignatures presidentSignatures, UserSignatures greffierSignatures, String numeroOrdonnance) {
+    private Context getContext(NewOrdonnance data, LocalDate dateOrdonnance, UserSignatures presidentSignatures, UserSignatures greffierSignatures, String numeroOrdonnance, Optional<Ordonnance> concernedOrdonnace) {
 
         Utilisateur connectedUser = utilisateurService.getUtilisateurByEmail(SecurityContextHolder.getContext().getAuthentication().getName());
 
@@ -183,13 +184,19 @@ public class OrdonnanceServiceImpl implements OrdonnanceService {
         context.setVariable("mois", nomDuMois);
         context.setVariable("corpsDocument", data.getCorsDocument());
 
-        if (connectedUser.getRole().equals(Role.PRESIDENT)){
-            context.setVariable("nomPresident", presidentSignatures.getUserName());
-            context.setVariable("signature_president",   presidentSignatures.getUserSignatureUrl());
-        }
-        else if (connectedUser.getRole().equals(Role.GREFFIER_DIV)){
-            context.setVariable("nomGreffier",  greffierSignatures.getUserName());
-            context.setVariable("signature_greffier",   greffierSignatures.getUserSignatureUrl());
+        if (concernedOrdonnace.isPresent()) {
+            Ordonnance ordonnance = concernedOrdonnace.get();
+            if (connectedUser.getRole().equals(Role.PRESIDENT) || ordonnance.isSignaturePresident()) {
+                System.out.println(ordonnance.isSignaturePresident());
+                context.setVariable("nomPresident", presidentSignatures.getUserName());
+                context.setVariable("signature_president", presidentSignatures.getUserSignatureUrl());
+            }
+            if (connectedUser.getRole().equals(Role.GREFFIER_DIV) || ordonnance.isSignatureGreffier()) {
+                System.out.println(ordonnance.isSignatureGreffier());
+                context.setVariable("nomGreffier", greffierSignatures.getUserName());
+                context.setVariable("signature_greffier", greffierSignatures.getUserSignatureUrl());
+            }
+
         }
 
         return context;

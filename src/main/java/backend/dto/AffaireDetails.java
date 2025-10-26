@@ -17,5 +17,6 @@ public class AffaireDetails {
     private List<AudiencePourAffaireDetails> AudiencePourAffaireDetails;
     private List<PieceJointePourAffaireDetails> PieceJointePourAffaireDetails;
     private List<JugementsInformations> JugementsInformations;
+    private List<OrdonnancePourAffairDetails>  ordonnancePourAffairDetails;
 
 }

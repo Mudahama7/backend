@@ -20,6 +20,7 @@ public class PlainteMapper {
     private final AudienceMapper audienceMapper;
     private final PieceJointeMapper pieceJointeMapper;
     private final JugementMapper jugementMapper;
+    private final OrdonnanceMapper ordonnanceMapper;
 
     public Plainte mapFromNewPlainteRequestToEntity(NewAffaire newAffaire) {
         Plainte plainte = new Plainte();
@@ -61,6 +62,7 @@ public class PlainteMapper {
                                 .status(plainte.getStatutDossier().toString())
                                 .build())
                 .historiquePartageDossierDtos(plainte.getHistoriquePartageDuDossiers().stream().map(partageDossierMapper::mapFromEntityToDto).toList())
+                .ordonnancePourAffairDetails(plainte.getOrdonnances().stream().map(ordonnanceMapper::mapFromEntityToOrdonnanceAffairDetails).toList())
                 .AudiencePourAffaireDetails(plainte.getListeDAudiences().stream().map(audienceMapper::mapFromEntityToAudiencePourAffaireDetails).toList())
                 .PieceJointePourAffaireDetails(plainte.getPieceJointeAuDossiers().stream().map(pieceJointeMapper::mapFromEntityToDto).toList())
                 .JugementsInformations(plainte.getJugementFinal().stream().map(jugementMapper::mapFromEntityToPlainteInformations).toList())
